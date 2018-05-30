@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript"  th:src="@{/js/abc.js}"></script>
+    <script type="text/javascript">
+    
+    function createXHR(){
+    	  if(typeof XMLHttpRequest!="undefined"){
+    	    return new XMLHttpRequest();
+    	  }else if(typeof ActiveXObject!="undefined"){
+    	    if(typeof arguments.callee.activeXString!="string"){
+    	      var versions=["MSXML2.XMLHttp.6.0","MSXML2.XMLHttp.3.0","MSXML2.XMLHttp"],
+    	          i,len;
+    	      for(i=0,len=versions.length;i<len;i++){
+    	        try{
+    	          new ActiveXObject(versions[i]);
+    	          arguments.callee.activeXString=versions[i];
+    	          break;
+    	        }catch(ex){
+
+    	        }
+    	      }
+    	    }
+    	    return new ActiveXObject(arguments.callee.activeXString);
+    	  }else{
+    	    throw new Error("NO XHR object available");
+    	  }
+    	}
+
+    	var xhr=new createXHR();
+    	
+    	xhr.open("get","9xx",false);
+    	xhr.send(null);
+
+    	if((xhr.status >= 200 && xhr.status < 300)|| xhr.status == 304){
+    	  	console.log(xhr.responseText);
+    	}else{
+    		console.log(xhr);
+    	 	console.log("Request was unsuccessful: " + xhr.status);
+    	}
+    	
+    </script>
+    
+    <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script>
+    
+    
+    
+    
+</head>
+<body onload="zz()">
+<!--/*@thymesVar id="name" type="java.lang.String"*/-->
+<p th:text="'Hello！, ' + ${name} + '!'" >3333</p>
+<div class="coinmarketcap-currency-widget" data-currencyid="1027" data-base="USD"  data-secondary="BTC"></div>
+</body>
+</html>
