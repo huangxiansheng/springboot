@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class AController {
 
-	@RequestMapping("/a")
-	@ResponseBody
+	@RequestMapping("/inpage")
 	public String index() {
-		return "index page";
+		return "login";
 	}
 	
 	@RequestMapping("/th1")

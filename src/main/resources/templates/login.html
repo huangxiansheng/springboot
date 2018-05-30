@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登录</title>
+    <link rel="stylesheet" type="text/css" href="css/easyui/themes/icon.css"/>  
+    <link rel="stylesheet" type="text/css" href="css/easyui/themes/gray/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="css/easyui/themes/default/easyui.css">  
+    <script type="text/javascript" src="js/easyui/jquery.min.js"></script>  
+    <script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>  
+<!--[if IE]>
+		<script src="http://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<![endif]-->
+	<script type="text/javascript">
+	$(function(){
+		$('#w').window('open');
+	});
+	</script>
+</head>
+<body>
+    <div id="w" class="easyui-window" title="登录" data-options="modal:true,closed:true,iconCls:'Lockgo',closable:false,minimizable:false,collapsible:false,maximizable:false,draggable:false" style="width:400px;padding:20px 70px 20px 70px;">  
+           
+        <div style="margin-bottom:10px">  
+            <input class="easyui-textbox" id="logname" style="width:100%;height:30px;padding:12px" data-options="prompt:'用户名',iconCls:'icon-man',iconWidth:38">  
+        </div>  
+        <div style="margin-bottom:20px">  
+            <input class="easyui-textbox" id="logpass" type="password" style="width:100%;height:30px;padding:12px" data-options="prompt:'登录密码',iconCls:'icon-lock',iconWidth:38">  
+        </div>  
+        <div>  
+            <a href="javascript:;" onclick="dologin()" class="easyui-linkbutton" style="padding:5px 0px;width:100%;">  
+                <span style="font-size:14px;">登录</span>  
+            </a>  
+        </div>  
+    </div>  
+</body>
+</html>
