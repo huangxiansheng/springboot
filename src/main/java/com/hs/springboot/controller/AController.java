@@ -1,9 +1,15 @@
 package com.hs.springboot.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hs.springboot.dao.impl.UserDaoImpl;
+import com.hs.springboot.entity.HsUser;
 
 /**
  *@描述 
@@ -14,17 +20,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class AController {
 
-	@RequestMapping("/inpage")
+	@Autowired
+	private UserDaoImpl userDao;
+	
+	@RequestMapping("/in_page")
+	public String in_page() {
+		return "in_page";
+	}
+	@RequestMapping("/index")
 	public String index() {
-		return "login";
+		
+		List<HsUser> user = userDao.queryList(null);
+		System.out.println("a--------------");
+		return "inde";
 	}
 	
-	@RequestMapping("/th1")
+	@RequestMapping("/a")
 	public String th1(Model model) {
 		model.addAttribute("name", "Dear");
 		return "a";
 	}
-	@RequestMapping("/th2")
+	@RequestMapping("/b")
 	public String th2() {
 		
 		return "b";
