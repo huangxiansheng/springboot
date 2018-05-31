@@ -41,7 +41,7 @@ public class JdbcUserAuthenticationService implements UserDetailsService{
 		if("000001".equals(username)) {
 			authorities.add(new SimpleGrantedAuthority("admin"));//nu.getcode
 		}else {
-			authorities.add(new SimpleGrantedAuthority("putong"));//nu.getcode
+			authorities.add(new SimpleGrantedAuthority("warehouse"));//nu.getcode
 		}
 		
 		return new User(username, users.get(0).getPassword(), authorities);

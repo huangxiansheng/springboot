@@ -154,14 +154,19 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		Map map1 = new HashMap<>();
 		map1.put("ROLE_CODE", "admin");
 		map1.put("URL", "/index");
-		map1.put("URL", "/a");
 		list.add(map1);
 		
 		Map map2 = new HashMap<>();
-		map2.put("ROLE_CODE", "putong");
+		map2.put("ROLE_CODE", "warehouse");
 		map2.put("URL", "/index");
-		map2.put("URL", "/b");
 		list.add(map2);
+		
+		Map map3 = new HashMap<>();
+		map3.put("ROLE_CODE", "leader");
+		map3.put("URL", "/index");
+		list.add(map3);
+		
+		
 		return list;
 	}
 	
