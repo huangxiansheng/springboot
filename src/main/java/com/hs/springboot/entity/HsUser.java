@@ -1,6 +1,7 @@
 package com.hs.springboot.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *@描述 
@@ -14,6 +15,14 @@ public class HsUser implements Serializable{
 	private String cnName;
 	private String password;
 	
+	private List<Role> roles;
+	
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 	public String getUuid() {
 		return uuid;
 	}

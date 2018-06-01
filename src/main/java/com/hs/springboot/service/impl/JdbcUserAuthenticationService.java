@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.hs.springboot.dao.impl.UserDaoImpl;
 import com.hs.springboot.entity.HsUser;
+import com.hs.springboot.entity.Role;
+import com.hs.springboot.service.UserService;
 
 /**
  *@描述 
@@ -23,28 +25,23 @@ import com.hs.springboot.entity.HsUser;
 @Service
 public class JdbcUserAuthenticationService implements UserDetailsService{
 	@Autowired
-	UserDaoImpl dao;
+	UserService userService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO 根据用户名查询用户信息，把用户信息放入到下面那个对象
+		ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		HsUser user = userService.query(username);
 		
-		ArrayList authorities = new ArrayList();
-		List<HsUser> users = dao.queryList(null);
-		Iterator roleList = null;//roles.iterator();
-
-//		Role nu;
-//		while (roleList.hasNext()) {
-//			Object nu =  roleList.next();
-//			authorities.add(new SimpleGrantedAuthority(nu.toString()));//nu.getcode
-//		}
-		if("000001".equals(username)) {
-			authorities.add(new SimpleGrantedAuthority("admin"));//nu.getcode
-		}else {
-			authorities.add(new SimpleGrantedAuthority("warehouse"));//nu.getcode
+		List<Role> roles = user.getRoles();
+		if(null != roles && !roles.isEmpty()) {
+			Iterator<Role> roleList = roles.iterator();
+			while (roleList.hasNext()) {
+				Role role =  roleList.next();
+				authorities.add(new SimpleGrantedAuthority(role.getRole()));
+			}
 		}
 		
-		return new User(username, users.get(0).getPassword(), authorities);
+		return new User(username, user.getPassword(), authorities);
 	}
 
 }

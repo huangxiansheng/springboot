@@ -1,8 +1,12 @@
 package com.hs.springboot.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hs.springboot.dao.impl.UserDaoImpl;
 import com.hs.springboot.entity.HsUser;
+import com.hs.springboot.util.ContextUtil;
 
 /**
  *@描述 
@@ -29,28 +34,23 @@ public class AController {
 	}
 	@RequestMapping("/index")
 	public String index() {
-		
-		List<HsUser> user = userDao.queryList(null);
-		System.out.println("a--------------");
-		return "inde";
+		return "index";
 	}
 	
 	@RequestMapping("/a")
 	public String th1(Model model) {
 		model.addAttribute("name", "Dear");
+		
+		User u = ContextUtil.getUserInfo();
+		
 		return "a";
 	}
 	@RequestMapping("/b")
 	public String th2() {
-		
 		return "b";
 	}
-	
-	@RequestMapping("/9xx")
-	public String xx() {
-		if(true) {
-			throw new RuntimeException("daslflskdfj");
-		}
-		return "b";
+	@RequestMapping("/c")
+	public String th3() {
+		return "c";
 	}
 }

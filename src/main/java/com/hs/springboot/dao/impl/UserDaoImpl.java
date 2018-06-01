@@ -21,9 +21,9 @@ public class UserDaoImpl extends BaseDaoImpl<HsUser, String> implements Userdao{
 	}
 
 	@Override
-	public List queryList(Map<String, String> map) {
-		// TODO Auto-generated method stub
-		String sql = "select * from hs_user";
+	public List<HsUser> queryList(Map<String, String> map) {
+		String userName = map.get("userName");
+		String sql = "select * from hs_user where user_name = '" + userName + "'";
 		return super.queryListBysql(sql);
 	}
 

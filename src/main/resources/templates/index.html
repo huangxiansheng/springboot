@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="css/easyui/themes/icon.css"/>  
+    <link rel="stylesheet" type="text/css" href="css/easyui/themes/gray/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="css/easyui/themes/default/easyui.css">  
+    <script type="text/javascript" src="js/easyui/jquery.min.js"></script>  
+    <script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>  
+    <script type="text/javascript">
+    function tabCloseEven(){ //绑定右键菜单事件
+        //关闭当前
+        $('#mm-tabclose').click(function(){ 
+        	var currtab_title = $('#mm').data("currtab");
+            $('#tabs').tabs('close',currtab_title);
+        });   
+        //全部关闭
+        $('#mm-tabcloseall').click(function(){
+        	$('.tabs-inner span').each(function(i,n){
+                var t = $(n).text();
+                $("#tabs").tabs('close',t);
+            });    
+        });
+        //关闭除当前之外的TAB
+        $('#mm-tabcloseother').click(function(){
+            var currtab_title = $('#mm').data("currtab");
+            $('.tabs-inner span').each(function(i,n){
+                var t = $(n).text();
+                if(t!=currtab_title)
+                    $("#tabs").tabs('close',t);
+            });    
+        });
+        //取消
+    	$("#mm-exit").click(function(){
+    		$('#mm').menu('hide');
+    	});
+    }
+    function tabClose(){
+    	/*为选项卡绑定右键*/
+    	$(".tabs-inner").bind('contextmenu',function(e){
+        	$('#mm').menu('show', {
+                left: e.pageX,
+                top: e.pageY
+            });
+            var subtitle =$(this).children("span").text();
+            $('#mm').data("currtab",subtitle);
+            $('#tabs').tabs('select',subtitle);
+            return false;
+        });
+    }
+    
+    function clickMenu(node){
+    	var title = node.text;
+    	var url = node.url;
+    	if ($('#tabs').tabs('exists', title)){
+    		$('#tabs').tabs('select', title);//选中并刷新
+    		var currTab = $('#tabs').tabs('getSelected');
+    		if(url != undefined && currTab.panel('options').title != 'Home') {
+    			$('#tabs').tabs('update',{
+    				tab:currTab,
+    				options:{
+    					content:createFrame(url)
+    				}
+    			});
+    		}
+    	} else {
+    		var content = createFrame(url);
+    		$('#tabs').tabs('add',{
+    			title:title,
+    			content:content,
+    			closable:true
+    		});
+    	}
+    	tabClose();
+    }
+    function createFrame(url) {
+ 		var s = '<iframe src="'+url+'" scrolling="auto" frameborder="0" allowtransparency="true" style="width:100%;height:100%;background-color: #f2f2f2;"></iframe>';
+ 		return s;
+ 	}
+    
+    function checkSession(){
+    	console.log("Session");
+    	$.ajax({
+    		url:'/user/query',
+    		success: function(data){
+   				if(data && data.userName){
+   				}else{
+   					window.location.href= "/logout";
+   				}
+   	      	}
+    	});
+	}
+    
+    $(function (){
+    	//title
+    	$.ajax({
+    		url:'/user/query',
+    		success: function(data){
+    			if(data){
+        	    	$('#cc').layout('add',{
+        	    		region: 'north',
+        	    		height: 0,
+        	    		collapsible : false,
+        	    		title: '您好：' + data.cnName+'  ,欢迎进入系统',
+        	    		split: true,
+        			    tools: [{
+        			    	text:'退出',
+        			        iconCls:'icon-back',
+        			        handler:function(){
+        			        	window.location.href= "/logout";
+        					}
+        			    }]
+        			});
+    			}
+    		}
+    	});
+    	
+    	//首页
+    	tabCloseEven();
+    	$('#tabs').tabs("add", {
+			title:'首页',
+			closable:false,
+			content:'<iframe src="/store/allpage" class="bottomBack" allowtransparency="true" frameborder="0" style="height:100%;width:100%;background-color: #f2f2f2;" />'
+		});
+    	tabClose();
+    	
+    	//菜单
+    	$('#tt').tree({
+    	    url:'menu/tree',
+    		onClick: function(node){
+    			clickMenu(node);
+    			//此方法用来在点击菜单时检测是否超时，如果超时则退出
+    			checkSession();
+    		}
+    	});
+    });
+    </script>
+</head>
+<body class = "easyui-layout" id="cc">
+    <!-- <div data-options="region:'north',title:'North Title',split:true" style="height:100px;"></div> -->
+    <div data-options="region:'west',title:'菜单',split:true" style="width:200px;">
+		<ul id="tt"></ul>
+    </div>
+    <div data-options="region:'center'" style="background:#eee;">
+    	<div id="tabs" class="easyui-tabs" fit="true" border="false" style="border: none;"></div>
+	    <div id="mm" class="easyui-menu" style="width:150px;display: none">
+	        <div id="mm-tabclose" data-options="iconCls:'icon-cancel'" >关闭</div>
+	        <!-- <div id="mm-tabcloseall" data-options="iconCls:'icon-cancel'">全部关闭</div> -->
+	        <div id="mm-tabcloseother" data-options="iconCls:'icon-remove'">关闭其他</div>
+		    <div id="mm-exit">取消</div>
+		</div>
+    </div>
+<!-- <p th:text="'Hello！, ' + ${name} + '!'" >3333</p> -->
+</body>
+</html>
