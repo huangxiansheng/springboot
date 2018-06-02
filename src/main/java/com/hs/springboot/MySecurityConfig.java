@@ -21,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,16 +40,20 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.hs.springboot.entity.Menu;
+import com.hs.springboot.service.MenuService;
 import com.hs.springboot.service.impl.JdbcUserAuthenticationService;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(jsr250Enabled=true)
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private Environment environment;
 	@Autowired
 	private JdbcUserAuthenticationService userDetailsService;
-	
+	@Autowired
+	private MenuService menuService;;
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -126,15 +131,19 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		if (!CollectionUtils.isEmpty(remenus)) {
 			for (Map<String, Object> map : remenus) {
 				String role = (String) map.get("ROLE_CODE");
-				String url = (String) map.get("URL");
-				if (!StringUtils.isEmpty(url) && !StringUtils.isEmpty(role)) {
-					url = url + "*";
-					if (resourceMap.containsKey(url)) {
-						String value = resourceMap.get(url);
-						resourceMap.put(url, value + "," + role);
-					} else {
-						resourceMap.put(url, role);
+				List<Menu> urls = (List<Menu>) map.get("URL");
+				if (!StringUtils.isEmpty(urls) && !StringUtils.isEmpty(role)) {
+					for (Menu menu : urls) {
+						String url =menu.getUrl();
+						url = url + "*";
+						if (resourceMap.containsKey(url)) {
+							String value = resourceMap.get(url);
+							resourceMap.put(url, value + "," + role);
+						} else {
+							resourceMap.put(url, role);
+						}
 					}
+					
 				}
 			}
 		}
@@ -152,18 +161,22 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		List<Map<String, Object>> list = new ArrayList<>();
 		//TODO 配置权限
 		Map map1 = new HashMap<>();
-		map1.put("ROLE_CODE", "admin");
-		map1.put("URL", "/index");
+		map1.put("ROLE_CODE", "ADMIN");
+		List<Menu> adminm = menuService.queryMenuByRole("ADMIN");
+		map1.put("URL", adminm);
+		
 		list.add(map1);
 		
 		Map map2 = new HashMap<>();
-		map2.put("ROLE_CODE", "warehouse");
-		map2.put("URL", "/index");
+		map2.put("ROLE_CODE", "WAREHOUSE");
+		List<Menu> warehouse = menuService.queryMenuByRole("WAREHOUSE");
+		map2.put("URL", warehouse);
 		list.add(map2);
 		
 		Map map3 = new HashMap<>();
-		map3.put("ROLE_CODE", "leader");
-		map3.put("URL", "/index");
+		map3.put("ROLE_CODE", "LEADER");
+		List<Menu> leader = menuService.queryMenuByRole("LEADER");
+		map3.put("URL", leader);
 		list.add(map3);
 		
 		
