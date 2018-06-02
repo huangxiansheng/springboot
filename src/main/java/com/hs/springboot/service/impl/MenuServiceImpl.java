@@ -2,6 +2,8 @@ package com.hs.springboot.service.impl;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,10 @@ public class MenuServiceImpl implements MenuService {
 	private MenuDao menuDao;
 	
 	@Override
-//	@RolesAllowed(value = {"admin","warehouse"})
+//	@RolesAllowed(value = {"ADMIN","warehouse"})
 //	@PreAuthorize("hasAuthority('ADMIN')")
 	public List<Menu> queryMenuByRole(String role) {
 		return menuDao.queryMenuByRole(role);
 	}
-
+	
 }

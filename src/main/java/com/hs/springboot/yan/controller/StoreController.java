@@ -2,6 +2,7 @@ package com.hs.springboot.yan.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *@描述 
@@ -33,6 +34,10 @@ public class StoreController {
 		return "/store/removepage";
 	}
 	
-	
+	@RequestMapping("/a")
+	@ResponseBody
+	public String query() {
+		return "aaaaaaaaaaa";
+	}
 	
 }

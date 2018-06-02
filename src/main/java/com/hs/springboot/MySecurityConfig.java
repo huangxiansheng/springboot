@@ -161,21 +161,21 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		List<Map<String, Object>> list = new ArrayList<>();
 		//TODO 配置权限
 		Map map1 = new HashMap<>();
-		map1.put("ROLE_CODE", "ADMIN");
-		List<Menu> adminm = menuService.queryMenuByRole("ADMIN");
+		map1.put("ROLE_CODE", "ROLE_ADMIN");
+		List<Menu> adminm = menuService.queryMenuByRole("ROLE_ADMIN");
 		map1.put("URL", adminm);
 		
 		list.add(map1);
 		
 		Map map2 = new HashMap<>();
-		map2.put("ROLE_CODE", "WAREHOUSE");
-		List<Menu> warehouse = menuService.queryMenuByRole("WAREHOUSE");
+		map2.put("ROLE_CODE", "ROLE_WAREHOUSE");
+		List<Menu> warehouse = menuService.queryMenuByRole("ROLE_WAREHOUSE");
 		map2.put("URL", warehouse);
 		list.add(map2);
 		
 		Map map3 = new HashMap<>();
-		map3.put("ROLE_CODE", "LEADER");
-		List<Menu> leader = menuService.queryMenuByRole("LEADER");
+		map3.put("ROLE_CODE", "ROLE_LEADER");
+		List<Menu> leader = menuService.queryMenuByRole("ROLE_LEADER");
 		map3.put("URL", leader);
 		list.add(map3);
 		

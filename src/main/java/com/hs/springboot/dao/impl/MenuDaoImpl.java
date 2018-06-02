@@ -63,13 +63,13 @@ public class MenuDaoImpl implements MenuDao {
 	@Override
 	public List<Menu> queryMenuByRole(String role) {
 		//TODO 此处是写死的
-		if("ADMIN".equals(role)) {
+		if("ROLE_ADMIN".equals(role)) {
 			return adminMenus;
 		}
-		if("WAREHOUSE".equals(role)) {
+		if("ROLE_WAREHOUSE".equals(role)) {
 			return warehouseMenus;
 		}
-		if("LEADER".equals(role)) {
+		if("ROLE_LEADER".equals(role)) {
 			return leaderMenus;
 		}
 		return null;
