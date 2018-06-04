@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hs.springboot.controller.BaseController;
 import com.hs.springboot.entity.HsPage;
+import com.hs.springboot.yan.entity.StoreDef;
 import com.hs.springboot.yan.entity.StoreView;
 import com.hs.springboot.yan.service.StoreService;
 
@@ -60,16 +61,35 @@ public class StoreController extends BaseController{
 		//按区域查询，要根据  区域，烟id，生产日期，入库日期，汇总
 		Map<String, Object> map = new HashMap<>(); 
 		HsPage page = this.getPage(request);
-		
 		Map params = this.getRequestParams(request);
-		
 		HsPage rePage = storeService.queryPageByMap(page, params);
-		
-		
 		map.put("rows", rePage.getResultData());//返回的数据
 		map.put("total", rePage.getTotal());//【返回】共多少数据
-		
 		return map;
 	}
+	
+	@RequestMapping("/queryarea")
+	@ResponseBody
+	public List<StoreDef> queryarea(){
+		return storeService.queryListDef();
+	}
+	@RequestMapping("/querysmokeId")
+	@ResponseBody
+	public List<Map<String,String>> querysmokeId(){
+		List<Map<String,String>> list  = new ArrayList<Map<String,String>>();
+		
+		Map map1 = new HashMap<>();
+		map1.put("smokeId", "A001");
+		map1.put("name", "这个烟");
+		list.add(map1);
+		
+		Map map2 = new HashMap<>();
+		map2.put("smokeId", "A002");
+		map2.put("name", "那个烟");
+		list.add(map2);
+		
+		return list;
+	}
+	
 	
 }

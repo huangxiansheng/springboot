@@ -8,12 +8,32 @@
     <link rel="stylesheet" type="text/css" href="/css/easyui/themes/default/easyui.css">  
     <script type="text/javascript" src="/js/easyui/jquery.min.js"></script>  
     <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/easyui-lang-zh_CN.js"></script>  
     <script type="text/javascript">
     	$(function(){
+    		
      		$('#btn').linkbutton({
     		    iconCls: 'icon-search'
     		});
-     		
+     	    $('#btn').bind('click', function(){
+     	    	query();
+     	    });
+     		$('#area').combobox({
+     		    url:'/store/queryarea',
+     		    valueField:'area',
+     		    textField:'area'
+     		});
+     		$('#smokeId').combobox({
+     		    url:'/store/querysmokeId',
+     		    valueField:'smokeId',
+     		    textField:'name'
+     		});
+     		$('#date1').datebox({
+     		    required: false
+     		});
+     		$('#date2').datebox({
+     		    required: false
+     		});
      		$('#grid').datagrid({
 	   		    url:'/store/queryallpage',
 	   		   	pagination: true,
@@ -23,15 +43,11 @@
 	   		 	singleSelect: true,
 	   		 	sortName: 'area',
 	   		 	sortOrder: 'asc',
-	   			queryParams: {
-	   				name: 'easyui',
-	   				subject: 'datagrid'
-	   			},
 	   		    columns: [
 	   		    	[
 	   		    	{field:'area',title:'区域',width:100},
 	   		        {field:'smokeId',title:'品牌',width:100},
-	   		        {field:'smokeNumber',title:'数量',width:100,align:'right'},
+	   		        {field:'smokeNumber',title:'数量',width:100},
 	   		        {field:'createDate',title:'生产日期',width:100},
 	   		        {field:'storeTime',title:'入库时间',width:100}
 	   		        ]
@@ -45,6 +61,16 @@
      			displayMsg : "当前显示 {from} - {to} 条记录   共 {total} 条记录"
      		});
     	});
+    	
+    	function query(){
+    		console.log('query');
+    		$('#grid').datagrid('load', {
+   				area: $('#area').combobox('getValue'),
+   				smokeId: $('#smokeId').combobox('getValue'),
+   				date1: $('#date1').datebox('getValue'),
+   				date2: $('#date2').datebox('getValue')
+    		}); ;
+    	}
     </script>
     <style type="text/css">
     .formLabe{
@@ -56,16 +82,17 @@
 </head>
 <body>
 <div class="easyui-layout"  fit="true">
-    <div data-options="region:'north',split:true" style="height:67px;">
+    <div data-options="region:'north',split:true" style="height:82px;">
     	<form id="form" action="/#">
 	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:60px;border: none;">
-	    		<tr>
-	    			<td class="formLabe">区域</td><td style="text-align: left;">下拉</td>
-	    			<td class="formLabe">品牌</td><td>下拉</td>
-	    			<td class="formLabe">生产时间</td><td>时间1</td><td>时间2</td>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:10%;">区域</td><td style="width:10%;padding-top: 5px;"><input id="area" name="area"></td>
+	    			<td class="formLabe" style="width:10%;">品牌</td><td style="width:10%;padding-top: 5px;"><input id="smokeId" name="smokeId"></td>
+	    			<td class="formLabe" style="width:10%;">生产日期</td><td style="width:10%;text-align: right;padding-top: 5px;"><input id="date1" type="text" name="date1"></td>
+	    			<td style="width:10%;padding-top: 5px;">到<input id="date2" type="text" name="date2"></td>
 	    		</tr>
 	    		<tr>
-	    			<td colspan="7" style="text-align: center;"><a id="btn" href="#">查询</a></td>
+	    			<td colspan="7" style="text-align: center;padding-top: 5px;padding-bottom: 5px;"><a id="btn" href="#">查询</a></td>
 	    		</tr>
 	    	</table>
     	</form>

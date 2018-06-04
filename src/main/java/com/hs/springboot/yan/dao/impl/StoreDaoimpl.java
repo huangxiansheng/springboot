@@ -1,5 +1,6 @@
 package com.hs.springboot.yan.dao.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
@@ -34,6 +35,12 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 		
 		
 		return this.queryForPageBySql(sql, page,StoreView.class);
+	}
+
+	@Override
+	public List<StoreDef> queryListDef() {
+		String sql = "select area from hs_store_def group by area";
+		return super.queryListBysql(sql, StoreDef.class);
 	}
 
 }

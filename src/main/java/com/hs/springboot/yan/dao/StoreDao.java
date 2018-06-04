@@ -1,8 +1,10 @@
 package com.hs.springboot.yan.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.hs.springboot.entity.HsPage;
+import com.hs.springboot.yan.entity.StoreDef;
 
 /**
  *@描述 
@@ -11,4 +13,5 @@ import com.hs.springboot.entity.HsPage;
  */
 public interface StoreDao {
 	public HsPage queryPageByMap(HsPage page,Map<String, String> params) ;
+	public List<StoreDef> queryListDef();
 }

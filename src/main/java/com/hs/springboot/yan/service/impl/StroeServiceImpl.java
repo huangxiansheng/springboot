@@ -1,5 +1,6 @@
 package com.hs.springboot.yan.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.dao.StoreDao;
+import com.hs.springboot.yan.entity.StoreDef;
 import com.hs.springboot.yan.service.StoreService;
 
 /**
@@ -23,6 +25,11 @@ public class StroeServiceImpl implements StoreService {
 	@Override
 	public HsPage queryPageByMap(HsPage page,Map<String, String> params) {
 		return storeDao.queryPageByMap(page, params);
+	}
+
+	@Override
+	public List<StoreDef> queryListDef() {
+		return storeDao.queryListDef();
 	}
 
 }
