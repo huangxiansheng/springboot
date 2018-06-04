@@ -31,4 +31,9 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> implements BaseDao
 		return jdbcTemplate.query(sql, new GenericBeanRowMapper<T>(persistentClass));
 	}
 	
+	public <E> List<E> queryListBysql(String sql,Class<E> clazz) {
+		Assert.hasText(sql);
+		return jdbcTemplate.query(sql, new GenericBeanRowMapper<E>(clazz));
+	}
+	
 }

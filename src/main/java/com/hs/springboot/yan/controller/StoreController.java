@@ -1,8 +1,14 @@
 package com.hs.springboot.yan.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hs.springboot.yan.service.StoreService;
 
 /**
  *@描述 
@@ -12,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/store")
 public class StoreController {
+	
+	@Autowired
+	private StoreService storeService;
 	
 	//首页查询
 	@RequestMapping("/allpage")
@@ -34,10 +43,12 @@ public class StoreController {
 		return "/store/removepage";
 	}
 	
-	@RequestMapping("/a")
+	@RequestMapping("/queryallpage")
 	@ResponseBody
-	public String query() {
-		return "aaaaaaaaaaa";
+	public Map<String, Object> queryallpage() {
+		
+		
+		return new HashMap<>();
 	}
 	
 }
