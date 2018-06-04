@@ -40,11 +40,17 @@
 		       <groupId>mysql</groupId>
 		       <artifactId>mysql-connector-java</artifactId>
 		</dependency>
-<dependency>
-    <groupId>javax.persistence</groupId>
-    <artifactId>persistence-api</artifactId>
-    <version>1.0</version>
-</dependency>
+		<dependency>
+		    <groupId>javax.persistence</groupId>
+		    <artifactId>persistence-api</artifactId>
+		    <version>1.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.7</version>
+		</dependency>
+
 <!--         <dependency>自身监控模块
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

@@ -3,9 +3,78 @@
 <head>
     <title>首页查询</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/icon.css"/>  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/gray/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/default/easyui.css">  
+    <script type="text/javascript" src="/js/easyui/jquery.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>  
+    <script type="text/javascript">
+    	$(function(){
+     		$('#btn').linkbutton({
+    		    iconCls: 'icon-search'
+    		});
+     		
+     		$('#grid').datagrid({
+	   		    url:'/store/queryallpage',
+	   		   	pagination: true,
+	   		   	striped: true,
+	   		   	fit: true,
+	   		 	fitColumns: true,
+	   		 	singleSelect: true,
+	   		 	sortName: 'area',
+	   		 	sortOrder: 'asc',
+	   			queryParams: {
+	   				name: 'easyui',
+	   				subject: 'datagrid'
+	   			},
+	   		    columns: [
+	   		    	[
+	   		    	{field:'area',title:'区域',width:100},
+	   		        {field:'smokeId',title:'品牌',width:100},
+	   		        {field:'smokeNumber',title:'数量',width:100,align:'right'},
+	   		        {field:'createDate',title:'生产日期',width:100},
+	   		        {field:'storeTime',title:'入库时间',width:100}
+	   		        ]
+	   		    ]
+     		});
+     		var pager = $('#grid').datagrid('getPager');
+     		$(pager).pagination({
+     			pageSize : 10,
+     			beforePageText : "第",
+     			afterPageText : "页  共{pages}页",
+     			displayMsg : "当前显示 {from} - {to} 条记录   共 {total} 条记录"
+     		});
+    	});
+    </script>
+    <style type="text/css">
+    .formLabe{
+    	height: 30px;
+		text-align: right;
+		padding-right:5px;
+    }
+    </style>
 </head>
 <body>
-<!--/*@thymesVar id="name" type="java.lang.String"*/-->
-<p>这是首页</p>
+<div class="easyui-layout"  fit="true">
+    <div data-options="region:'north',split:true" style="height:67px;">
+    	<form id="form" action="/#">
+	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:60px;border: none;">
+	    		<tr>
+	    			<td class="formLabe">区域</td><td style="text-align: left;">下拉</td>
+	    			<td class="formLabe">品牌</td><td>下拉</td>
+	    			<td class="formLabe">生产时间</td><td>时间1</td><td>时间2</td>
+	    		</tr>
+	    		<tr>
+	    			<td colspan="7" style="text-align: center;"><a id="btn" href="#">查询</a></td>
+	    		</tr>
+	    	</table>
+    	</form>
+    </div>
+    <div data-options="region:'center'" style="background:#eee;">
+    	<table id="grid"></table>
+    </div>
+</div>
+
+
 </body>
 </html>

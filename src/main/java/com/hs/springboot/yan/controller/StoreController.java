@@ -1,13 +1,22 @@
 package com.hs.springboot.yan.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hs.springboot.controller.BaseController;
+import com.hs.springboot.entity.HsPage;
+import com.hs.springboot.yan.entity.StoreView;
 import com.hs.springboot.yan.service.StoreService;
 
 /**
@@ -17,7 +26,7 @@ import com.hs.springboot.yan.service.StoreService;
  */
 @Controller
 @RequestMapping("/store")
-public class StoreController {
+public class StoreController extends BaseController{
 	
 	@Autowired
 	private StoreService storeService;
@@ -45,10 +54,22 @@ public class StoreController {
 	
 	@RequestMapping("/queryallpage")
 	@ResponseBody
-	public Map<String, Object> queryallpage() {
+	public Map<String, Object> queryallpage(HttpServletRequest request) {
+		//【分页】  page 是第几页，rows表示每页 多少行
+		//【排序】sort: area order: asc
+		//按区域查询，要根据  区域，烟id，生产日期，入库日期，汇总
+		Map<String, Object> map = new HashMap<>(); 
+		HsPage page = this.getPage(request);
+		
+		Map params = this.getRequestParams(request);
+		
+		HsPage rePage = storeService.queryPageByMap(page, params);
 		
 		
-		return new HashMap<>();
+		map.put("rows", rePage.getResultData());//返回的数据
+		map.put("total", rePage.getTotal());//【返回】共多少数据
+		
+		return map;
 	}
 	
 }

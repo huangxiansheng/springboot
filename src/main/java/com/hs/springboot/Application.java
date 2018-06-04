@@ -2,6 +2,10 @@ package com.hs.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.hs.springboot.db.Dialect;
+import com.hs.springboot.db.MysqlDialect;
 
 /**
  *@描述 
@@ -10,6 +14,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class Application {
+	
+	@Bean
+	public Dialect getDialect() {
+		return new MysqlDialect();
+	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
