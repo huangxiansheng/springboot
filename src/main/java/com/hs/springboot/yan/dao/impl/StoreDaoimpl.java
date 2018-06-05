@@ -3,6 +3,7 @@ package com.hs.springboot.yan.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.hs.springboot.dao.impl.BaseDaoImpl;
@@ -25,16 +26,38 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 
 	@Override
 	public HsPage queryPageByMap(HsPage page, Map<String, String> params) {
-		String sql = 
-				"SELECT a.area,a.smoke_id,a.create_date,a.store_time,sum(a.smoke_number) as smoke_number FROM " + 
-				"(SELECT def.area,def.area_id,da.* FROM hs_store_def def" + 
-				"  LEFT JOIN hs_store_data da" + 
-				"  ON def.uuid = da.uuid) a" + 
-				"  WHERE a.smoke_id IS not null" + 
-				"  group BY a.area,a.smoke_id,a.create_date,a.store_time";
+		String area = params.get("area");
+		String smokeId = params.get("smokeId");
+		String date1 = params.get("date1");
+		String date2 = params.get("date2");
 		
 		
-		return this.queryForPageBySql(sql, page,StoreView.class);
+		StringBuilder sql = new StringBuilder("SELECT a.area,a.smoke_id,a.create_date,a.store_time,sum(a.smoke_number) as smoke_number FROM ")
+				 .append("(SELECT def.area,def.area_id,da.* FROM hs_store_def def")
+				 .append(" LEFT JOIN hs_store_data da")
+				 .append(" ON def.uuid = da.uuid ")
+				 .append(" WHERE da.smoke_id IS not null");
+		
+		//添加查询条件
+		if(StringUtils.isNotEmpty(area)) {
+			sql = sql.append(" and def.area = '"+area+"'");
+		}
+		if(StringUtils.isNotEmpty(smokeId)) {
+			sql = sql.append(" and da.smoke_Id = '"+smokeId+"'");
+		}
+		if(StringUtils.isNotEmpty(date1)) {
+			//str_to_date(‘2017-10-16 15:30:28’, ‘%Y-%m-%d %h:%i:%s’); 
+			sql = sql.append(" and da.create_date >= str_to_date('"+date1+"','%Y-%m-%d')");
+		}
+		if(StringUtils.isNotEmpty(date2)) {
+			sql = sql.append(" and da.create_date <= str_to_date('"+date2+"','%Y-%m-%d')");
+		}
+		
+		sql = sql.append(") a")
+				.append(" group BY a.area,a.smoke_id,a.create_date,a.store_time");
+		
+		
+		return this.queryForPageBySql(sql.toString(), page,StoreView.class);
 	}
 
 	@Override

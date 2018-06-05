@@ -170,4 +170,5 @@ INSERT INTO hs_store_def (uuid,area,area_id) VALUE('2-60','2','60');
 
 INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('1-33','A001',date'2017-01-03',30,date'2018-02-03','000001');
 INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('1-32','A001',date'2017-01-03',10,date'2018-02-03','000001');
-INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('2-12','B001',date'2017-01-03',30,date'2018-02-03','000001');
+INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('2-14','B001',date'2017-08-03',30,date'2018-02-03','000001');
+INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('2-15','B002',date'2018-03-02',30,date'2018-02-03','000001');

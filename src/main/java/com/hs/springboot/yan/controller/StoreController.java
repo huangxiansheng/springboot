@@ -63,6 +63,9 @@ public class StoreController extends BaseController{
 		HsPage page = this.getPage(request);
 		Map params = this.getRequestParams(request);
 		HsPage rePage = storeService.queryPageByMap(page, params);
+		
+		List<StoreView> list = rePage.getResultData();
+		
 		map.put("rows", rePage.getResultData());//返回的数据
 		map.put("total", rePage.getTotal());//【返回】共多少数据
 		return map;

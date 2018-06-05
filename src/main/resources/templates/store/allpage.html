@@ -9,6 +9,7 @@
     <script type="text/javascript" src="/js/easyui/jquery.min.js"></script>  
     <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>  
     <script type="text/javascript" src="/js/easyui/easyui-lang-zh_CN.js"></script>  
+    <script type="text/javascript" src="/store/smokeBox.js"></script>  
     <script type="text/javascript">
     	$(function(){
     		
@@ -23,8 +24,10 @@
      		    valueField:'area',
      		    textField:'area'
      		});
+     		
      		$('#smokeId').combobox({
-     		    url:'/store/querysmokeId',
+     		    //url:'/store/querysmokeId',
+     		    data: smokeJsons,
      		    valueField:'smokeId',
      		    textField:'name'
      		});
@@ -46,7 +49,14 @@
 	   		    columns: [
 	   		    	[
 	   		    	{field:'area',title:'区域',width:100},
-	   		        {field:'smokeId',title:'品牌',width:100},
+	   		        {field:'smokeId',title:'品牌',width:100,formatter: function(value,row,index){
+	   		        	smokeJsons.forEach(function( val, index ) {
+	   		        		if(value == val.smokeId){
+	   		        			value = val.name;
+	   		        		}
+	   		        	});
+	   		        	return value;
+	   		        }},
 	   		        {field:'smokeNumber',title:'数量',width:100},
 	   		        {field:'createDate',title:'生产日期',width:100},
 	   		        {field:'storeTime',title:'入库时间',width:100}
