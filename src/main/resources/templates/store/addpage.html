@@ -3,9 +3,55 @@
 <head>
     <title>扫码入库</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/icon.css"/>  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/gray/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/default/easyui.css">  
+    <script type="text/javascript" src="/js/easyui/jquery.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/easyui-lang-zh_CN.js"></script>  
+    <script type="text/javascript" src="/store/smokeBox.js"></script>  
+    <script type="text/javascript">
+    	$(function(){
+    		
+    		$("#p").panel({
+    		    fit: true,
+    		    title:'扫码录入',
+    		    tools:[{
+    		        iconCls:'icon-edit',
+    		        handler:function(){alert('new')}
+    		    }]
+    		});
+    		
+     		$('#btn').linkbutton({
+    		    iconCls: 'icon-search'
+    		});
+     	    $('#btn').bind('click', function(){
+     	    	query();
+     	    });
+     	    
+     		$('#area').combobox({
+     		    url:'/store/queryarea',
+     		    valueField:'area',
+     		    textField:'area'
+     		});
+    	});
+    	function query(){
+    		console.log('query');
+    	}
+    </script>
 </head>
 <body>
-<!--/*@thymesVar id="name" type="java.lang.String"*/-->
-<p>扫码入库</p>
+	<div id="p">
+		<form action="">
+	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:40px;border: none;">
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:15%;text-align: right;padding-right: 15px;">区域</td><td style="width:15%;padding-top: 5px;"><input id="area" name="area"></td>
+	    			<td class="formLabe" style="width:15%;"><a id="btn" href="#">查询</a></td>
+	    		</tr>
+	    	</table>
+		</form>
+
+	</div>
 </body>
 </html>
