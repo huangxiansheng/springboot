@@ -10,7 +10,8 @@ import com.hs.springboot.dao.impl.BaseDaoImpl;
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.dao.StoreDao;
 import com.hs.springboot.yan.entity.StoreDef;
-import com.hs.springboot.yan.entity.StoreView;
+import com.hs.springboot.yan.entity.view.StoreDataView;
+import com.hs.springboot.yan.entity.view.StoreView;
 
 /**
  *@描述 
@@ -64,6 +65,19 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 	public List<StoreDef> queryListDef() {
 		String sql = "select area from hs_store_def group by area";
 		return super.queryListBysql(sql, StoreDef.class);
+	}
+
+	@Override
+	public List<StoreDataView> queryStoreDate(String area) {
+		StringBuilder sql = new StringBuilder("");
+		 sql = sql.append("SELECT def.area,def.area_id,da.* FROM hs_store_def def")
+				 .append(" LEFT JOIN hs_store_data da")
+				 .append(" ON def.uuid = da.uuid ");
+		if(StringUtils.isNotEmpty(area)) {
+			sql = sql.append(" where def.area = '"+area+"'");
+		}
+		sql = sql.append(" order by def.area,def.area_id");
+		return super.queryListBysql(sql.toString(), StoreDataView.class);
 	}
 
 }

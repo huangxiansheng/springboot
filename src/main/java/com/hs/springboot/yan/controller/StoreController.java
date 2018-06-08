@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.hs.springboot.controller.BaseController;
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.entity.StoreDef;
-import com.hs.springboot.yan.entity.StoreView;
+import com.hs.springboot.yan.entity.view.StoreDataView;
+import com.hs.springboot.yan.entity.view.StoreView;
 import com.hs.springboot.yan.service.StoreService;
 
 /**
@@ -76,6 +77,23 @@ public class StoreController extends BaseController{
 	public List<StoreDef> queryarea(){
 		return storeService.queryListDef();
 	}
+	
+	@RequestMapping("/queryData")
+	@ResponseBody
+	public List<StoreDataView> queryStoreDate(HttpServletRequest request){
+		String area = this.getRequestParams(request).get("area");
+		return storeService.queryStoreDate(area);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping("/querysmokeId")
 	@ResponseBody
 	public List<Map<String,String>> querysmokeId(){

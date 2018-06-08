@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.dao.StoreDao;
 import com.hs.springboot.yan.entity.StoreDef;
+import com.hs.springboot.yan.entity.view.StoreDataView;
 import com.hs.springboot.yan.service.StoreService;
 
 /**
@@ -30,6 +31,11 @@ public class StroeServiceImpl implements StoreService {
 	@Override
 	public List<StoreDef> queryListDef() {
 		return storeDao.queryListDef();
+	}
+
+	@Override
+	public List<StoreDataView> queryStoreDate(String area) {
+		return storeDao.queryStoreDate(area);
 	}
 
 }

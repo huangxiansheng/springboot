@@ -26,6 +26,7 @@ CREATE TABLE hs_store_def (
 -- store_uuid,smoke_id 烟编号.create_date 生产日期,store_time 入库时间,store_user 入库用户
 CREATE TABLE hs_store_data (
   `uuid` VARCHAR(40) NOT NULL COMMENT '仓库uuid',
+  `tray` VARCHAR(40) NOT NULL COMMENT '托盘编号',
   `smoke_id` VARCHAR(40) NULL COMMENT '烟编号',
   `create_date` date NULL COMMENT '生产日期',
   `smoke_number` integer NULL COMMENT '数量',
@@ -37,6 +38,7 @@ CREATE TABLE hs_store_data (
 -- store_uuid,smoke_id 烟编号.create_date 生产日期,store_time 入库时间,store_user 入库用户,out_time,out_user
 CREATE TABLE hs_store_his (
   `uuid` VARCHAR(40) NOT NULL COMMENT '仓库uuid',
+  `tray` VARCHAR(40) NOT NULL COMMENT '托盘编号',
   `smoke_id` VARCHAR(40) NULL COMMENT '烟编号',
   `create_date` date NULL COMMENT '生产日期',
   `store_time` timestamp NULL COMMENT '入库时间',
@@ -168,7 +170,7 @@ INSERT INTO hs_store_def (uuid,area,area_id) VALUE('2-60','2','60');
 
 
 
-INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('1-33','A001',date'2017-01-03',30,date'2018-02-03','000001');
-INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('1-32','A001',date'2017-01-03',10,date'2018-02-03','000001');
-INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('2-14','B001',date'2017-08-03',30,date'2018-02-03','000001');
-INSERT INTO hs_store_data (uuid,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('2-15','B002',date'2018-03-02',30,date'2018-02-03','000001');
+INSERT INTO hs_store_data (uuid,tray,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('1-33','12345','A001',date'2017-01-03',30,date'2018-02-03','000001');
+INSERT INTO hs_store_data (uuid,tray,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('1-32','22345','A001',date'2017-01-03',10,date'2018-02-03','000001');
+INSERT INTO hs_store_data (uuid,tray,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('2-14','32345','B001',date'2017-08-03',30,date'2018-02-03','000001');
+INSERT INTO hs_store_data (uuid,tray,smoke_id,create_date,smoke_number,store_time,store_user) VALUE('2-15','42345','B002',date'2018-03-02',30,date'2018-02-03','000001');

@@ -29,7 +29,60 @@
     	
     	function query(){
     		console.log('query');
+    		
+        	$.ajax({
+        		url:'/store/queryData',
+        		data: $('#form').serialize(),
+        		success: function(data){
+        			console.log(data.length);
+        			if(data && data.length){
+        				var length = data.length;
+        				var rows = Math.ceil(length/10); //除以10，向上取整，得到有多少行
+        				$('#table').html("");
+        				var trHtml = "";
+        				for(var i=0;i<rows;i++){
+        					//先拼每行的数据
+        					var tdHtml = "";
+        					for(var j=0;j<10;j++){
+        						var storeData = data[i*10+j];
+        						console.log("--------"+i+"-----"+j);
+        						console.log(storeData);
+        						tdHtml = tdHtml + createTdHtml(storeData);
+        					}
+        					
+        					//再把每行的数据放入到table中
+        					trHtml = trHtml+'<tr style="height:40px;" id="aa'+i+'">'+tdHtml+'</tr>';
+        				}
+        				$('#table').append(trHtml);
+        				
+        				
+        			}
+        			console.log(data);
+       	      	}
+        	});    		
+    		
+    		
     	}
+    	
+    	function createTdHtml(storeData){
+    		var color = '#66ff99';
+    		if(storeData.smokeNumber){
+    			if(storeData.smokeNumber>=34){
+    				color = '#CC5233';
+    			}else if(storeData.smokeNumber<=34 && storeData.smokeNumber>0){
+    				color = '#FFF68F';
+    			}
+    		}
+    		var vHtml = "";
+    		if(color == '#66ff99'){
+    			vHtml = storeData.area +"-"+storeData.areaId;
+    		}else{
+    			vHtml = storeData.area +"-"+storeData.areaId;
+    		}
+    		
+    		return '<td style="background-color: '+color+';height:20px;width:40px;" title="提示信息" class="easyui-tooltip"><input name="selectStore" type="checkbox">'+vHtml+'</td>';
+    	}
+    	
     </script>
 <style type="text/css">
 .formLabe {
@@ -57,19 +110,6 @@
     <div data-options="region:'center'" style="background:#eee;">
     			
 		<table id="table" cellspacing="5" cellpadding="5" style="width:100%;border: none;">
-			<tr style="height:40px;">
-				<td style="background-color: red;height:20px;width:40px" title="提示信息" class="easyui-tooltip">1-11</td>
-				<td style="background-color: yellow;height:20px;"title="This is the tooltip message." class="easyui-tooltip"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-				<td style="background-color: yellow;height:20px;"></td>
-			</tr>
 		</table>
     </div>
 </div>

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.entity.StoreDef;
+import com.hs.springboot.yan.entity.view.StoreDataView;
 
 /**
  *@描述 
@@ -14,4 +15,5 @@ import com.hs.springboot.yan.entity.StoreDef;
 public interface StoreDao {
 	public HsPage queryPageByMap(HsPage page,Map<String, String> params) ;
 	public List<StoreDef> queryListDef();
+	public List<StoreDataView> queryStoreDate(String area);
 }

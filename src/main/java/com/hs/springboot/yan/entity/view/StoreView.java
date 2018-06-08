@@ -1,4 +1,4 @@
-package com.hs.springboot.yan.entity;
+package com.hs.springboot.yan.entity.view;
 
 import java.io.Serializable;
 import java.util.Date;

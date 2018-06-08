@@ -12,11 +12,18 @@ public class StoreData implements Serializable{
 
 	private String uuid;
 	private String smokeId;
+	private String tray;
 	private Integer smokeNumber;
 	private Date createDate;
 	private Date storeTime;
 	private String storeUser;
 	
+	public String getTray() {
+		return tray;
+	}
+	public void setTray(String tray) {
+		this.tray = tray;
+	}
 	public Integer getSmokeNumber() {
 		return smokeNumber;
 	}
