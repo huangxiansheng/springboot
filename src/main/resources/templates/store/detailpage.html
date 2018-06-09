@@ -28,8 +28,7 @@
      	    		if(checks[0].value == 'null'){
      	    			$.messager.alert('提示信息','只能选择非空的区域进行编辑','info');
      	    		}else{
-     	    			//TODO 编辑页面
-						console.log("编辑页面待做");
+						$('#win').window('open',true);
      	    		}
      	    	}else{
      	    		$.messager.alert('提示信息','请选择一个进行编辑','info');
@@ -40,8 +39,21 @@
      		    valueField:'area',
      		    textField:'area'
      		});
-     		
+     		$('#win').window({
+     			title: '修改区域明细',
+     		    width:600,
+     		    height:400,
+     		   	collapsible: false,
+     		   	maximizable: false,
+     		  	minimizable: false,
+     		  	collapsible: false,
+     		    modal:true,
+     		   	closed: true,
+     		   	content: createFrame('/store/modify')
+     		});
     	});
+    	
+    	
     	
     	function query(){
         	$.ajax({
@@ -104,7 +116,10 @@
     		}
     		return '<td style="background-color: '+color+';height:20px;width:40px;" '+titleHtml+'><input name="selectStore" type="checkbox" value="'+storeData.uuid+'">'+vHtml+'</td>';
     	}
-    	
+        function createFrame(url) {
+     		var s = '<iframe src="'+url+'" scrolling="auto" frameborder="0" allowtransparency="true" style="width:100%;height:100%;background-color: #f2f2f2;"></iframe>';
+     		return s;
+     	}
     </script>
 <style type="text/css">
 .formLabe {
@@ -113,7 +128,9 @@
 	padding-right: 5px;
 }
 
-	
+	.panel-body {  
+    overflow: hidden;  
+    } 
 </style>
 </head>
 <body>
@@ -136,6 +153,8 @@
 		</table>
     </div>
 </div>
+
+<div id="win"></div>
 
 </body>
 </html>

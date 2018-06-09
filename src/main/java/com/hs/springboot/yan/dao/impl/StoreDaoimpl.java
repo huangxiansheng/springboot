@@ -80,4 +80,20 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 		return super.queryListBysql(sql.toString(), StoreDataView.class);
 	}
 
+	@Override
+	public StoreDataView queryByUuid(String uuid) {
+		StringBuilder sql = new StringBuilder("");
+		 sql = sql.append("SELECT def.area,def.area_id,da.* FROM hs_store_def def")
+				 .append(" LEFT JOIN hs_store_data da")
+				 .append(" ON def.uuid = da.uuid ");
+		if(StringUtils.isNotEmpty(uuid)) {
+			sql = sql.append(" where def.uuid = '"+uuid+"'");
+		}
+		List<StoreDataView> lists = super.queryListBysql(sql.toString(), StoreDataView.class);
+		if(lists != null && lists.size() ==1){
+			return lists.get(0);
+		}
+		return null;
+	}
+
 }

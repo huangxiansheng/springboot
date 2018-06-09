@@ -16,4 +16,5 @@ public interface StoreDao {
 	public HsPage queryPageByMap(HsPage page,Map<String, String> params) ;
 	public List<StoreDef> queryListDef();
 	public List<StoreDataView> queryStoreDate(String area);
+	public StoreDataView queryByUuid(String uuid);
 }

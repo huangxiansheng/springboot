@@ -48,6 +48,11 @@ public class StoreController extends BaseController{
 	public String detailpage() {
 		return "/store/detailpage";
 	}
+	//区域明细-修改页面
+	@RequestMapping("/modify")
+	public String modify() {
+		return "/store/modify";
+	}
 	//出库页面
 	@RequestMapping("/removepage")
 	public String removepage() {
@@ -83,6 +88,12 @@ public class StoreController extends BaseController{
 	public List<StoreDataView> queryStoreDate(HttpServletRequest request){
 		String area = this.getRequestParams(request).get("area");
 		return storeService.queryStoreDate(area);
+	}
+	@RequestMapping("/queryByUuid")
+	@ResponseBody
+	public StoreDataView queryByUuid(HttpServletRequest request){
+		String uuid = this.getRequestParams(request).get("uuid");
+		return storeService.queryByUuid(uuid);
 	}
 	
 	

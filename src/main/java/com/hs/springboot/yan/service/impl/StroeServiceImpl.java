@@ -38,4 +38,9 @@ public class StroeServiceImpl implements StoreService {
 		return storeDao.queryStoreDate(area);
 	}
 
+	@Override
+	public StoreDataView queryByUuid(String uuid) {
+		return storeDao.queryByUuid(uuid);
+	}
+
 }
