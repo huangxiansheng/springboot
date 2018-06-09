@@ -3,6 +3,8 @@ package com.hs.springboot.yan.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  *@描述 
  *@日期 2018年6月4日上午9:56:11
@@ -14,7 +16,9 @@ public class StoreData implements Serializable{
 	private String smokeId;
 	private String tray;
 	private Integer smokeNumber;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date createDate;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date storeTime;
 	private String storeUser;
 	

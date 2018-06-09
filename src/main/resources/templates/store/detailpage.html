@@ -19,6 +19,22 @@
      	    $('#btn').bind('click', function(){
      	    	query();
      	    });
+     		$('#modify').linkbutton({
+    		    iconCls: 'icon-edit'
+    		});
+     	    $('#modify').bind('click', function(){
+     	    	var checks = $(":checkbox:checked");
+     	    	if(checks.length == 1){
+     	    		if(checks[0].value == 'null'){
+     	    			$.messager.alert('提示信息','只能选择非空的区域进行编辑','info');
+     	    		}else{
+     	    			//TODO 编辑页面
+						console.log("编辑页面待做");
+     	    		}
+     	    	}else{
+     	    		$.messager.alert('提示信息','请选择一个进行编辑','info');
+     	    	}
+     	    });
      		$('#area').combobox({
      		    url:'/store/queryarea',
      		    valueField:'area',
@@ -28,13 +44,10 @@
     	});
     	
     	function query(){
-    		console.log('query');
-    		
         	$.ajax({
         		url:'/store/queryData',
         		data: $('#form').serialize(),
         		success: function(data){
-        			console.log(data.length);
         			if(data && data.length){
         				var length = data.length;
         				var rows = Math.ceil(length/10); //除以10，向上取整，得到有多少行
@@ -45,8 +58,6 @@
         					var tdHtml = "";
         					for(var j=0;j<10;j++){
         						var storeData = data[i*10+j];
-        						console.log("--------"+i+"-----"+j);
-        						console.log(storeData);
         						tdHtml = tdHtml + createTdHtml(storeData);
         					}
         					
@@ -54,33 +65,44 @@
         					trHtml = trHtml+'<tr style="height:40px;" id="aa'+i+'">'+tdHtml+'</tr>';
         				}
         				$('#table').append(trHtml);
-        				
-        				
+        			}else{
+        				$.messager.alert('提示信息','获取信息出错','info');
         			}
-        			console.log(data);
-       	      	}
+       	      	},
+       	     	error: function(XMLHttpRequest , errorMsg , e){
+       	     		$.messager.alert('提示信息','获取信息出错','info');
+       	     	} 
         	});    		
-    		
-    		
     	}
     	
     	function createTdHtml(storeData){
-    		var color = '#66ff99';
+    		var color = '#66ff99';//默认绿色
     		if(storeData.smokeNumber){
-    			if(storeData.smokeNumber>=34){
+    			if(storeData.smokeNumber>=34){//红色
     				color = '#CC5233';
     			}else if(storeData.smokeNumber<=34 && storeData.smokeNumber>0){
-    				color = '#FFF68F';
+    				color = '#FFF68F';//黄色
     			}
     		}
     		var vHtml = "";
-    		if(color == '#66ff99'){
+    		var title = "";
+    		if(color == '#66ff99'){//绿色
     			vHtml = storeData.area +"-"+storeData.areaId;
     		}else{
     			vHtml = storeData.area +"-"+storeData.areaId;
+    			title = title +"品牌      ：" + storeData.smokeId +"\n";
+    			title = title +"数量      ：" + storeData.smokeNumber +"\n";
+    			title = title +"托盘号   ：" + storeData.tray +"\n";
+    			title = title +"生产时间：" + storeData.createDate +"\n";
+    			title = title +"入库时间：" + storeData.storeTime +"\n";
     		}
     		
-    		return '<td style="background-color: '+color+';height:20px;width:40px;" title="提示信息" class="easyui-tooltip"><input name="selectStore" type="checkbox">'+vHtml+'</td>';
+    		var titleHtml = "";
+    		if(title==""){
+    		}else{
+    			titleHtml = 'title="'+title+'" class="easyui-tooltip"';
+    		}
+    		return '<td style="background-color: '+color+';height:20px;width:40px;" '+titleHtml+'><input name="selectStore" type="checkbox" value="'+storeData.uuid+'">'+vHtml+'</td>';
     	}
     	
     </script>
@@ -103,6 +125,7 @@
 	    			<td class="formLabe" style="width:10%;">区域</td>
 	    			<td style="width:10%;padding-top: 5px;"><input id="area" name="area"></td>
 	    			<td style="width:10%;padding-top: 5px;"><a id="btn" href="#">查询</a></td>
+	    			<td style="width:10%;padding-top: 5px;"><a id="modify" href="#">编辑</a></td>
 	    		</tr>
 	    	</table>
     	</form>
