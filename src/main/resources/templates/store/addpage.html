@@ -16,38 +16,130 @@
     		
     		$("#p").panel({
     		    fit: true,
-    		    title:'扫码录入',
-    		    tools:[{
+    		    title:'扫码录入'
+    		    //,
+/*     		    tools:[{
     		        iconCls:'icon-edit',
     		        handler:function(){alert('new')}
-    		    }]
+    		    }] */
     		});
     		
      		$('#btn').linkbutton({
-    		    iconCls: 'icon-search'
+    		    iconCls: 'icon-save'
     		});
      	    $('#btn').bind('click', function(){
-     	    	query();
+     	    	save();
      	    });
      	    
      		$('#area').combobox({
      		    url:'/store/queryarea',
      		    valueField:'area',
-     		    textField:'area'
+     		    textField:'area',
+     		   	onSelect: function(record){
+	     		   	$('#areaId').combobox({
+	         		    url:'/store/queryareaId?area='+ record.area,
+	         		    valueField:'areaId',
+	         		    textField:'areaId'
+	         		});
+     		   	}
+     		});
+     		$('#areaId').combobox({
+     		});
+     		
+     		$('#tray').textbox({
+     		});
+     		$('#saoma').textbox({
+     		});
+     		$('#smokeNumber').numberbox({
+     			min: 0,
+     			max:34
+     		});
+     		
+     		
+     		$('#form').form({
+     		    url: '/store/save',
+     		    success:function(data){
+    		    	if(data){
+    		    		var json = $.parseJSON(data);
+    		    		console.log(json);
+    		    		if(true == json.flag){
+    		    			$.messager.alert({
+    		    				title: '提示信息',
+    		    				msg: '保存成功!',
+    		    				fn: function(){
+    		    					location.reload();
+    		    				}
+    		    			});
+    		    			
+    		    			//window.location.href= "/index";
+    		    		}else{
+    		    			$.messager.alert('提示信息','保存失败！'+json.msg,'error');
+    		    		}
+    		    	}else{
+    		    		$.messager.alert('提示信息','保存失败！','error');
+    		    	}
+     		    },
      		});
     	});
-    	function query(){
-    		console.log('query');
+    	function save(){
+    		console.log($("#form").serialize());
+    		$('#form').submit();
+/*         	$.ajax({
+        		url:'/store/save',
+        		data: $("#form").serialize(),
+        		success: function(data){
+        			console.log(data);
+       				if(data && data.userName){
+       				}else{
+       					
+       				}
+       	      	},
+       	     	error: function(xmlrequest,error){
+       	     		
+       	     	} 
+        	}); */
     	}
     </script>
 </head>
 <body>
 	<div id="p">
-		<form action="">
+		<form id="form">
 	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:40px;border: none;">
 	    		<tr style="margin-top: 5px">
-	    			<td class="formLabe" style="width:15%;text-align: right;padding-right: 15px;">区域</td><td style="width:15%;padding-top: 5px;"><input id="area" name="area"></td>
-	    			<td class="formLabe" style="width:15%;"><a id="btn" href="#">查询</a></td>
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">扫码获取</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="saoma" name="saoma" type="text"></td>
+	    			<td style="width:25%;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">托盘条码</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="tray" name="tray" type="text"></td>
+	    			<td style="width:25%;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">数量</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="smokeNumber" name="smokeNumber" type="text"></td>
+	    			<td style="width:25%;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">区域</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="area" name="area"></td>
+	    			<td style="width:25%;padding-top: 5px;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">货号</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="areaId" name="areaId"></td>
+	    			<td style="width:25%;padding-top: 5px;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td style="width:25%;"></td>
+	    			<td class="formLabe" style="width:25%;text-align: center;padding-top: 10px"><a id="btn" href="#">保存</a></td>
+	    			<td style="width:25%;padding-top: 5px;"></td>
+	    			<td style="width:25%;"></td>
 	    		</tr>
 	    	</table>
 		</form>

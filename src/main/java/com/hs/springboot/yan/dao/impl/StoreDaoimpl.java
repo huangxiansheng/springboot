@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.hs.springboot.dao.impl.BaseDaoImpl;
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.dao.StoreDao;
+import com.hs.springboot.yan.entity.StoreData;
 import com.hs.springboot.yan.entity.StoreDef;
 import com.hs.springboot.yan.entity.view.StoreDataView;
 import com.hs.springboot.yan.entity.view.StoreView;
@@ -94,6 +95,18 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 			return lists.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public List<StoreDef> queryListDefByarea(String area) {
+		String sql = "select area,area_id from hs_store_def where area='"+area+"' order by area_id";
+		return super.queryListBysql(sql, StoreDef.class);
+	}
+
+	@Override
+	public void save(StoreData storeData) {
+		
+		
 	}
 
 }

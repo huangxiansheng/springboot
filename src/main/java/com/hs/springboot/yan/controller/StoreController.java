@@ -1,5 +1,7 @@
 package com.hs.springboot.yan.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,12 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hs.springboot.controller.BaseController;
 import com.hs.springboot.entity.HsPage;
+import com.hs.springboot.util.ContextUtil;
+import com.hs.springboot.yan.entity.StoreData;
 import com.hs.springboot.yan.entity.StoreDef;
 import com.hs.springboot.yan.entity.view.StoreDataView;
 import com.hs.springboot.yan.entity.view.StoreView;
@@ -82,6 +87,12 @@ public class StoreController extends BaseController{
 	public List<StoreDef> queryarea(){
 		return storeService.queryListDef();
 	}
+	@RequestMapping("/queryareaId")
+	@ResponseBody
+	public List<StoreDef> queryareaId(HttpServletRequest request){
+		String area = this.getRequestParams(request).get("area");
+		return storeService.queryListDefByarea(area);
+	}
 	
 	@RequestMapping("/queryData")
 	@ResponseBody
@@ -97,7 +108,50 @@ public class StoreController extends BaseController{
 	}
 	
 	
-	
+	@RequestMapping("/save")
+	@ResponseBody
+	public Map<String,Object> save(HttpServletRequest request){
+		Map<String,Object> reMap = new HashMap<>();
+		try {
+			
+			StoreData storeData = new StoreData(); 
+			
+			String saoma = this.getRequestParams(request).get("saoma");//根据扫码获取，烟品牌和生产日期
+			//8位烟+7位？+6位日期+10位？？
+			String smokeId = "";
+			Date createDate = null;
+			if(saoma.length()==31) {
+				smokeId = saoma.substring(0, 8);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+				createDate = sdf.parse(saoma.substring(15, 21));
+			}
+			
+			String tray = this.getRequestParams(request).get("tray");
+			String smokeNumber = this.getRequestParams(request).get("smokeNumber");
+			String area = this.getRequestParams(request).get("area");
+			String areaId = this.getRequestParams(request).get("areaId");
+			
+			String uuid = area +"-"+areaId;
+			
+			storeData.setCreateDate(createDate);
+			storeData.setSmokeId(smokeId);
+			storeData.setUuid(uuid);
+			storeData.setTray(tray);
+			storeData.setSmokeNumber(Integer.valueOf(smokeNumber));
+			storeData.setStoreTime(new Date());
+			storeData.setStoreUser(ContextUtil.getUserInfo().getUsername());
+			
+			
+			storeService.save(storeData);
+			
+			reMap.put("flag", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			reMap.put("flag", false);
+			reMap.put("msg", e.getMessage());
+		}
+		return reMap;
+	}
 	
 	
 	
@@ -123,5 +177,7 @@ public class StoreController extends BaseController{
 		return list;
 	}
 	
-	
+	public static void main(String[] args) {
+		System.out.println("1234567".substring(0, 3));
+	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hs.springboot.entity.HsPage;
+import com.hs.springboot.yan.entity.StoreData;
 import com.hs.springboot.yan.entity.StoreDef;
 import com.hs.springboot.yan.entity.view.StoreDataView;
 
@@ -20,6 +21,10 @@ public interface StoreService {
 	public List<StoreDataView> queryStoreDate(String area);
 
 	public StoreDataView queryByUuid(String uuid);
+
+	public List<StoreDef> queryListDefByarea(String area);
+
+	public void save(StoreData storeData);
 	
 	
 	

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.dao.StoreDao;
+import com.hs.springboot.yan.entity.StoreData;
 import com.hs.springboot.yan.entity.StoreDef;
 import com.hs.springboot.yan.entity.view.StoreDataView;
 import com.hs.springboot.yan.service.StoreService;
@@ -41,6 +42,16 @@ public class StroeServiceImpl implements StoreService {
 	@Override
 	public StoreDataView queryByUuid(String uuid) {
 		return storeDao.queryByUuid(uuid);
+	}
+
+	@Override
+	public List<StoreDef> queryListDefByarea(String area) {
+		return storeDao.queryListDefByarea(area);
+	}
+
+	@Override
+	public void save(StoreData storeData) {
+		storeDao.save(storeData);
 	}
 
 }
