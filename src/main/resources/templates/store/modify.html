@@ -1,11 +1,168 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>出库</title>
+    <title>修改</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/icon.css"/>  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/gray/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/default/easyui.css">  
+    <script type="text/javascript" src="/js/easyui/jquery.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/easyui-lang-zh_CN.js"></script>  
+    <script type="text/javascript" src="/store/smokeBox.js"></script>  
+    <script type="text/javascript">
+    $.extend($.fn.validatebox.defaults.rules, {
+    	maxLength: {
+            validator: function(value, param){
+                return value.length <= param[0];
+            },
+            message: '只能输入{0}位字符 .'
+        }
+    });
+    $.fn.validatebox.defaults.rules.remote.message = "扫码数据格式出错：(91)6位烟编号+7位+6位日期+10位其他";
+    
+    
+    	$(function(){
+    		
+    		$("#p").panel({
+    		    fit: true,
+    		});
+    		
+     		$('#btn').linkbutton({
+    		    iconCls: 'icon-save'
+    		});
+     	    $('#btn').bind('click', function(){
+     	    	save();
+     	    });
+     	    
+     		$('#area').combobox({
+     			readonly: true,
+     			width: 250,
+     		    url:'/store/queryarea',
+     		    valueField:'area',
+     		    textField:'area',
+     		   	onSelect: function(record){
+	     		   	$('#areaId').combobox({
+	         		    url:'/store/queryareaId?area='+ record.area,
+	         		    valueField:'areaId',
+	         		    textField:'areaId'
+	         		});
+     		   	}
+     		});
+     		$('#areaId').combobox({
+     			readonly: true,
+     			width: 250
+     		});
+     		$('#smokeId').combobox({
+     		    //url:'/store/querysmokeId',
+     		    width: 250,
+     		   	panelHeight: 250,
+     		    data: smokeJsons,
+     		    valueField:'smokeId',
+     		    textField:'name'
+     		});
+
+     		$('#tray').textbox({
+     			required: true,
+     			validType: 'maxLength[40]',
+     			width: 250
+     		});
+     		$('#saoma').textbox({
+     			required: true,
+     			validType: "remote['/store/checkSaoma','saoma']",
+     			width: 250
+     		});
+     		$('#smokeNumber').numberbox({
+     			width: 250,
+     			min: 0,
+     			max:34
+     		});
+     		$('#createDate').datebox({
+     			width: 250,
+     		    required: false
+     		});
+     		
+     		$('#form').form({
+     		    url: '/store/update',
+     		    success:function(data){
+    		    	if(data){
+    		    		var json = $.parseJSON(data);
+    		    		console.log(json);
+    		    		if(true == json.flag){
+    		    			$.messager.alert({
+    		    				title: '提示信息',
+    		    				msg: '更新成功!',
+    		    				fn: function(){
+    		    					window.parent.window.windClose();
+    		    				}
+    		    			});
+    		    		}else{
+    		    			$.messager.alert('提示信息','更新失败！'+json.msg,'error');
+    		    		}
+    		    	}else{
+    		    		$.messager.alert('提示信息','更新失败！','error');
+    		    	}
+     		    },
+     		});
+    	});
+    	function save(){
+    		console.log($("#form").serialize());
+    		$('#form').submit();
+    	}
+    </script>
 </head>
 <body>
-<!--/*@thymesVar id="name" type="java.lang.String"*/-->
-<p>出库</p>
+	<div id="p">
+		<form id="form">
+		<input th:value="${sdv.uuid}" type="hidden" name="uuid"/>
+	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:40px;border: none;">
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">区域(不可修改)</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="area" name="area" th:value="${sdv.area}"></td>
+	    			<td style="width:25%;padding-top: 5px;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">货号(不可修改)</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="areaId" name="areaId" th:value="${sdv.areaId}"></td>
+	    			<td style="width:25%;padding-top: 5px;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">品牌</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="smokeId" name="smokeId" th:value="${sdv.smokeId}" ></td>
+	    			<td style="width:25%;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">生产日期</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="createDate" name="createDate" th:value="${sdv.createDate}" ></td>
+	    			<td style="width:25%;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">托盘条码</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="tray" name="tray" type="text" th:value="${sdv.tray}" ></td>
+	    			<td style="width:25%;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:25%;text-align: right;padding-right: 15px;">数量</td>
+	    			<td style="width:25%;padding-top: 5px;"><input id="smokeNumber" name="smokeNumber" type="text" th:value="${sdv.smokeNumber}" ></td>
+	    			<td style="width:25%;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+
+	    		<tr style="margin-top: 5px">
+	    			<td style="width:25%;"></td>
+	    			<td class="formLabe" style="width:25%;text-align: center;padding-top: 10px"><a id="btn" href="#">保存</a></td>
+	    			<td style="width:25%;padding-top: 5px;"></td>
+	    			<td style="width:25%;"></td>
+	    		</tr>
+	    	</table>
+		</form>
+
+	</div>
 </body>
 </html>

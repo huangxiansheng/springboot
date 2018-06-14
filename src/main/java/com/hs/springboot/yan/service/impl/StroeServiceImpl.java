@@ -54,4 +54,9 @@ public class StroeServiceImpl implements StoreService {
 		storeDao.save(storeData);
 	}
 
+	@Override
+	public void update(StoreData storeData) {
+		storeDao.update(storeData);
+	}
+
 }

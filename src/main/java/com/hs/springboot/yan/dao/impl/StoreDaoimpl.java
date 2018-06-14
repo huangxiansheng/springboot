@@ -1,11 +1,13 @@
 package com.hs.springboot.yan.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hs.springboot.dao.impl.BaseDaoImpl;
 import com.hs.springboot.entity.HsPage;
 import com.hs.springboot.yan.dao.StoreDao;
@@ -103,10 +105,27 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 		return super.queryListBysql(sql, StoreDef.class);
 	}
 
+//	private String uuid;
+//	private String smokeId;
+//	private String tray;
+//	private Integer smokeNumber;
+//	@JsonFormat(pattern="yyyy-MM-dd")
+//	private Date createDate;
+//	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+//	private Date storeTime;
+//	private String storeUser;
 	@Override
-	public void save(StoreData storeData) {
-		
-		
+	public void save(StoreData sd) {
+		String sql ="insert into hs_store_data(uuid,smoke_Id,tray,smoke_Number,create_Date,store_Time,store_User) values(?,?,?,?,?,?,?)";
+		Object[] values = {sd.getUuid(),sd.getSmokeId(),sd.getTray(),sd.getSmokeNumber(),sd.getCreateDate(),sd.getStoreTime(),sd.getStoreUser()};
+		this.insertOrUpdate(sql, values);
+	}
+
+	@Override
+	public void update(StoreData sd) {
+		String sql ="update hs_store_data set smoke_Id = ?,tray=?,smoke_Number=?,create_Date=? where uuid =?";
+		Object[] values = {sd.getSmokeId(),sd.getTray(),sd.getSmokeNumber(),sd.getCreateDate() ,sd.getUuid()};
+		this.insertOrUpdate(sql, values);
 	}
 
 }

@@ -20,4 +20,5 @@ public interface StoreDao {
 	public StoreDataView queryByUuid(String uuid);
 	public List<StoreDef> queryListDefByarea(String area);
 	public void save(StoreData storeData);
+	public void update(StoreData storeData);
 }

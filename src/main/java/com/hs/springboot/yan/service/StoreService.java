@@ -25,6 +25,8 @@ public interface StoreService {
 	public List<StoreDef> queryListDefByarea(String area);
 
 	public void save(StoreData storeData);
+
+	public void update(StoreData storeData);
 	
 	
 	

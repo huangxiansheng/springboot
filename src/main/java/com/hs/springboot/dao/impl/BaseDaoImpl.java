@@ -82,4 +82,9 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> implements BaseDao
 	protected int queryForIntBySql(String sql) {
 		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
+	
+	protected void insertOrUpdate(String sql,Object[] values) {
+		jdbcTemplate.update(sql, values);
+	}
+	
 }

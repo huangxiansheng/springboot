@@ -47,6 +47,18 @@ CREATE TABLE hs_store_his (
   `out_user` VARCHAR(40) NULL COMMENT '出库用户',
   PRIMARY KEY (`uuid`));
 
+INSERT INTO hs_user(uuid, user_name, cn_name, password) VALUES
+('asdasdasd', '000001', '阿达', '$2a$10$BcI3l7/UMH.OD9TuVkuhV.IJDrJVkKFgxpDWiunwSLsslpkO6BONW');
+INSERT INTO hs_user(uuid, user_name, cn_name, password) VALUES
+('sdafdsfdsf', '000002', '撒地方', '$2a$10$BcI3l7/UMH.OD9TuVkuhV.IJDrJVkKFgxpDWiunwSLsslpkO6BONW');
+  
+ 
+INSERT INTO hs_user_role(uuid, user_name, role) VALUES
+('SADFSDAF', '000002', 'ROLE_LEADER');
+INSERT INTO hs_user_role(uuid, user_name, role) VALUES
+('sdfdfd', '000001', 'ROLE_ADMIN');
+ 
+  
 INSERT INTO hs_store_def (uuid,area,area_id) VALUE('1-01','1','01');
 INSERT INTO hs_store_def (uuid,area,area_id) VALUE('1-02','1','02');
 INSERT INTO hs_store_def (uuid,area,area_id) VALUE('1-03','1','03');

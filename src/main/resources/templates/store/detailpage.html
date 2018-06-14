@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/js/easyui/easyui-lang-zh_CN.js"></script>  
     <script type="text/javascript" src="/store/smokeBox.js"></script>  
     <script type="text/javascript">
+    var checkUuid ="";
     	$(function(){
     		
      		$('#btn').linkbutton({
@@ -28,6 +29,10 @@
      	    		if(checks[0].value == 'null'){
      	    			$.messager.alert('提示信息','只能选择非空的区域进行编辑','info');
      	    		}else{
+     	    			checkUuid = checks[0].value;
+     	    			$('#win').window({
+     	    				content: createFrame('/store/modify?uuid='+checkUuid)
+     	    			});
 						$('#win').window('open',true);
      	    		}
      	    	}else{
@@ -48,12 +53,14 @@
      		  	minimizable: false,
      		  	collapsible: false,
      		    modal:true,
-     		   	closed: true,
-     		   	content: createFrame('/store/modify')
+     		   	closed: true
      		});
     	});
     	
-    	
+    	function windClose(){
+    		$('#win').window('close');
+    		query();
+    	}
     	
     	function query(){
         	$.ajax({

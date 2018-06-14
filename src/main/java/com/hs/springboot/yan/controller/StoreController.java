@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -55,7 +56,10 @@ public class StoreController extends BaseController{
 	}
 	//区域明细-修改页面
 	@RequestMapping("/modify")
-	public String modify() {
+	public String modify(HttpServletRequest request,Model model) {
+		String uuid = this.getRequestParams(request).get("uuid");
+		StoreDataView sdv = storeService.queryByUuid(uuid);
+		model.addAttribute("sdv", sdv);
 		return "/store/modify";
 	}
 	//出库页面
@@ -106,6 +110,27 @@ public class StoreController extends BaseController{
 		String uuid = this.getRequestParams(request).get("uuid");
 		return storeService.queryByUuid(uuid);
 	}
+
+	@RequestMapping("/checkSaoma")
+	@ResponseBody
+	public boolean checkSaoma(HttpServletRequest request) {
+		String saoma = this.getRequestParams(request).get("saoma");//根据扫码获取，烟品牌和生产日期
+		
+		String smokeId = "";
+		Date createDate = null;
+		if(saoma.length()==31) {
+			smokeId = saoma.substring(2, 8);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
+			try {
+				createDate = sdf.parse(saoma.substring(15, 21));
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
 	
 	
 	@RequestMapping("/save")
@@ -117,11 +142,11 @@ public class StoreController extends BaseController{
 			StoreData storeData = new StoreData(); 
 			
 			String saoma = this.getRequestParams(request).get("saoma");//根据扫码获取，烟品牌和生产日期
-			//8位烟+7位？+6位日期+10位？？
+			//(91)6位烟+7位？+6位日期+10位？？
 			String smokeId = "";
 			Date createDate = null;
 			if(saoma.length()==31) {
-				smokeId = saoma.substring(0, 8);
+				smokeId = saoma.substring(2, 8);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 				createDate = sdf.parse(saoma.substring(15, 21));
 			}
@@ -150,6 +175,29 @@ public class StoreController extends BaseController{
 			reMap.put("flag", false);
 			reMap.put("msg", e.getMessage());
 		}
+		return reMap;
+	}
+	@RequestMapping("/update")
+	@ResponseBody
+	public Map<String,Object> update(HttpServletRequest request) throws ParseException {
+		Map<String,Object> reMap = new HashMap<>();
+		
+		String uuid = this.getRequestParams(request).get("uuid");
+		String tray = this.getRequestParams(request).get("tray");
+		String smokeNumber = this.getRequestParams(request).get("smokeNumber");
+		String smokeId = this.getRequestParams(request).get("smokeId");
+		String createDate = this.getRequestParams(request).get("createDate");
+		
+		StoreData storeData = new StoreData();
+		storeData.setUuid(uuid);
+		storeData.setTray(tray);
+		storeData.setSmokeNumber(Integer.valueOf(smokeNumber));
+		storeData.setSmokeId(smokeId);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		storeData.setCreateDate(sdf.parse(createDate));
+		
+		storeService.update(storeData);
+		reMap.put("flag", true);
 		return reMap;
 	}
 	
