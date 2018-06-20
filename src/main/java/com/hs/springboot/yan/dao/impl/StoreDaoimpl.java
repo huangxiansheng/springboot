@@ -71,13 +71,16 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 	}
 
 	@Override
-	public List<StoreDataView> queryStoreDate(String area) {
+	public List<StoreDataView> queryStoreDate(String area,String smokeId) {
 		StringBuilder sql = new StringBuilder("");
 		 sql = sql.append("SELECT def.area,def.area_id,da.* FROM hs_store_def def")
 				 .append(" LEFT JOIN hs_store_data da")
-				 .append(" ON def.uuid = da.uuid ");
+				 .append(" ON def.uuid = da.uuid where 1=1 ");
 		if(StringUtils.isNotEmpty(area)) {
-			sql = sql.append(" where def.area = '"+area+"'");
+			sql = sql.append(" and def.area = '"+area+"'");
+		}
+		if(StringUtils.isNotEmpty(smokeId)) {
+			sql = sql.append(" and da.smoke_Id = '"+smokeId+"'");
 		}
 		sql = sql.append(" order by def.area,def.area_id");
 		return super.queryListBysql(sql.toString(), StoreDataView.class);

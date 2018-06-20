@@ -1,5 +1,7 @@
 package com.hs.springboot.yan.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -102,7 +105,8 @@ public class StoreController extends BaseController{
 	@ResponseBody
 	public List<StoreDataView> queryStoreDate(HttpServletRequest request){
 		String area = this.getRequestParams(request).get("area");
-		return storeService.queryStoreDate(area);
+		String smokeId = this.getRequestParams(request).get("smokeId");
+		return storeService.queryStoreDate(area,smokeId);
 	}
 	@RequestMapping("/queryByUuid")
 	@ResponseBody
@@ -225,7 +229,28 @@ public class StoreController extends BaseController{
 		return list;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println("1234567".substring(0, 3));
+	@RequestMapping("/exp")
+	public List<Map<String,String>> exp(HttpServletResponse response){
+		 //文件类型
+        response.setHeader("content-Type", "application/vnd.ms-excel");
+        try {
+			response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode("出库.xlsx", "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+		}
+        
+        
+		List<Map<String,String>> list  = new ArrayList<Map<String,String>>();
+		
+		Map map1 = new HashMap<>();
+		map1.put("smokeId", "A001");
+		map1.put("name", "这个烟");
+		list.add(map1);
+		
+		Map map2 = new HashMap<>();
+		map2.put("smokeId", "A002");
+		map2.put("name", "那个烟");
+		list.add(map2);
+		
+		return list;
 	}
 }

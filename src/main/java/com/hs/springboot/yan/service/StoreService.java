@@ -18,7 +18,7 @@ public interface StoreService {
 	
 	public List<StoreDef> queryListDef();
 
-	public List<StoreDataView> queryStoreDate(String area);
+	public List<StoreDataView> queryStoreDate(String area, String smokeId);
 
 	public StoreDataView queryByUuid(String uuid);
 

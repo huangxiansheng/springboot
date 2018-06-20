@@ -1,11 +1,180 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>出库</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/icon.css"/>  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/gray/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="/css/easyui/themes/default/easyui.css">  
+    <script type="text/javascript" src="/js/easyui/jquery.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>  
+    <script type="text/javascript" src="/js/easyui/easyui-lang-zh_CN.js"></script>  
+    <script type="text/javascript" src="/store/smokeBox.js"></script>  
+    <script type="text/javascript">
+    var checkUuid ="";
+    	$(function(){
+    		
+     		$('#btn').linkbutton({
+    		    iconCls: 'icon-search'
+    		});
+     	    $('#btn').bind('click', function(){
+     	    	query();
+     	    });
+     		$('#exp').linkbutton({
+    		    iconCls: 'icon-print'
+    		});
+     	    $('#exp').bind('click', function(){
+     	    	var checks = $(":checkbox:checked");
+     	    	console.log(checks);
+     	    	if(checks.length > 0){
+     	    		//TODO 导出页面
+     	    		var contextPath = $('#contextPath').attr('href');
+     	    		console.log(contextPath);
+     	    		window.location.href = contextPath + "store/exp";
+     	    		
+     	    	}else{
+     	    		$.messager.alert('提示信息','请查询并选择后导出','info');
+     	    	}
+     	    });
+     		$('#area').combobox({
+     		    url:'/store/queryarea',
+     		    valueField:'area',
+     		    textField:'area'
+     		});
+     		$('#smokeId').combobox({
+     		    //url:'/store/querysmokeId',
+     		    required: true,
+     		    width: 250,
+     		   	panelHeight: 250,
+     		    data: smokeJsons,
+     		    valueField:'smokeId',
+     		    textField:'name'
+     		});
+    	});
+    	
+    	function query(){
+    		if(!$('#form').form('validate')){
+    			return ;
+    		}
+    		
+        	$.ajax({
+        		url:'/store/queryData',
+        		data: $('#form').serialize(),
+        		success: function(data){
+        			if(data && data.length){
+        				var length = data.length;
+        				var rows = Math.ceil(length/10); //除以10，向上取整，得到有多少行
+        				$('#table').html("");
+        				var trHtml = "";
+        				for(var i=0;i<rows;i++){
+        					//先拼每行的数据
+        					var tdHtml = "";
+        					var jL = 10;
+        					if(i == rows -1){
+        						jL = length%10;
+        					}
+        					
+        					for(var j=0;j<jL;j++){
+        						var storeData = data[i*10+j];
+        						tdHtml = tdHtml + createTdHtml(storeData);
+        					}
+        					
+        					//再把每行的数据放入到table中
+        					trHtml = trHtml+'<tr style="height:40px;" id="aa'+i+'">'+tdHtml+'</tr>';
+        				}
+        				$('#table').append(trHtml);
+        			}else{
+        				$.messager.alert('提示信息','获取信息出错','info');
+        			}
+       	      	},
+       	     	error: function(XMLHttpRequest , errorMsg , e){
+       	     		$.messager.alert('提示信息','获取信息出错','info');
+       	     	} 
+        	});    		
+    	}
+    	
+    	function createTdHtml(storeData){
+    		var color = '#66ff99';//默认绿色
+    		var uuid = "";
+    		var area = "";
+    		
+    		if(storeData){
+    			uuid = storeData.uuid ;
+    			area = storeData.area ;
+    			areaId = storeData.areaId ;
+    		}
+    		
+    		if(storeData.smokeNumber){
+    			if(storeData.smokeNumber>=34){//红色
+    				color = '#CC5233';
+    			}else if(storeData.smokeNumber<=34 && storeData.smokeNumber>0){
+    				color = '#FFF68F';//黄色
+    			}
+    		}
+    		var vHtml = "";
+    		var title = "";
+    		if(color == '#66ff99'){//绿色
+    			vHtml = area +"-"+areaId;
+    		}else{
+    			vHtml = area +"-"+areaId;
+    			title = title +"品牌      ：" + storeData.smokeId +"\n";
+    			title = title +"数量      ：" + storeData.smokeNumber +"\n";
+    			title = title +"托盘号   ：" + storeData.tray +"\n";
+    			title = title +"生产时间：" + storeData.createDate +"\n";
+    			title = title +"入库时间：" + storeData.storeTime +"\n";
+    		}
+    		
+    		var titleHtml = "";
+    		if(title==""){
+    		}else{
+    			titleHtml = 'title="'+title+'" class="easyui-tooltip"';
+    		}
+    		return '<td style="background-color: '+color+';height:20px;width:40px;" '+titleHtml+'><input name="selectStore" type="checkbox" checked value="'+uuid+'">'+vHtml+'</td>';
+    	}
+        function createFrame(url) {
+     		var s = '<iframe src="'+url+'" scrolling="auto" frameborder="0" allowtransparency="true" style="width:100%;height:100%;background-color: #f2f2f2;"></iframe>';
+     		return s;
+     	}
+    </script>
+<style type="text/css">
+.formLabe {
+	height: 30px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+	.panel-body {  
+    overflow: hidden;  
+    } 
+</style>
 </head>
 <body>
-<!--/*@thymesVar id="name" type="java.lang.String"*/-->
-<p>出库</p>
+<a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} "
+ id="contextPath" hidden="true"></a>
+<div class="easyui-layout"  fit="true">
+	<form id="form" action="/#">
+    <div data-options="region:'north',split:true" style="height:62px;">
+    	
+	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:40px;border: none;">
+	    		<tr style="margin-top: 5px">
+	    			<td class="formLabe" style="width:10%;">区域</td>
+	    			<td style="width:10%;padding-top: 5px;"><input id="area" name="area"></td>
+	    			<td  class="formLabe" style="width:10%;">品牌</td>
+	    			<td style="width:10%;padding-top: 5px;"><input id="smokeId" name="smokeId"></td>
+	    			<td style="width:10%;padding-top: 5px;"><a id="btn" href="#">查询</a></td>
+	    			<td style="width:10%;padding-top: 5px;"><a id="exp" href="#">出库</a></td>
+	    		</tr>
+	    	</table>
+    	
+    </div>
+    <div data-options="region:'center'" style="background:#eee;">
+    			
+		<table id="table" cellspacing="5" cellpadding="5" style="width:100%;border: none;">
+		</table>
+    </div>
+    </form>
+</div>
+
+
 </body>
 </html>

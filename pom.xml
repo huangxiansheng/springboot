@@ -50,7 +50,16 @@
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.7</version>
 		</dependency>
-
+        <dependency>  
+            <groupId>org.apache.poi</groupId>  
+            <artifactId>poi</artifactId>  
+            <version>3.13</version>  
+        </dependency>  
+        <dependency>  
+            <groupId>org.apache.poi</groupId>  
+            <artifactId>poi-ooxml</artifactId>  
+            <version>3.13</version>  
+        </dependency>  
 <!--         <dependency>自身监控模块
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

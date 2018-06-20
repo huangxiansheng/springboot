@@ -16,7 +16,7 @@ import com.hs.springboot.yan.entity.view.StoreDataView;
 public interface StoreDao {
 	public HsPage queryPageByMap(HsPage page,Map<String, String> params) ;
 	public List<StoreDef> queryListDef();
-	public List<StoreDataView> queryStoreDate(String area);
+	public List<StoreDataView> queryStoreDate(String area, String smokeId);
 	public StoreDataView queryByUuid(String uuid);
 	public List<StoreDef> queryListDefByarea(String area);
 	public void save(StoreData storeData);

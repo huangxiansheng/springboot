@@ -35,8 +35,8 @@ public class StroeServiceImpl implements StoreService {
 	}
 
 	@Override
-	public List<StoreDataView> queryStoreDate(String area) {
-		return storeDao.queryStoreDate(area);
+	public List<StoreDataView> queryStoreDate(String area,String smokeId) {
+		return storeDao.queryStoreDate(area,smokeId);
 	}
 
 	@Override
