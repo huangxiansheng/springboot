@@ -1,5 +1,7 @@
 package com.hs.springboot.yan.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
@@ -13,9 +15,20 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -230,27 +243,93 @@ public class StoreController extends BaseController{
 	}
 	
 	@RequestMapping("/exp")
-	public List<Map<String,String>> exp(HttpServletResponse response){
+	public void exp(HttpServletRequest request,HttpServletResponse response){
 		 //文件类型
         response.setHeader("content-Type", "application/vnd.ms-excel");
         try {
-			response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode("出库.xlsx", "utf-8"));
+			response.setHeader("Content-Disposition", "attachment;filename="+URLEncoder.encode("出库"+DateFormatUtils.format(new Date(), "yyyy-MM-dd--HHmmss")+".xlsx", "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 		}
         
+        XSSFWorkbook wb = new XSSFWorkbook();
+        XSSFSheet sheet = wb.createSheet("第一sheet页");
         
-		List<Map<String,String>> list  = new ArrayList<Map<String,String>>();
+        XSSFCellStyle titleStyle = createTitleStyle(wb, 24, HSSFFont.BOLDWEIGHT_NORMAL, HSSFCellStyle.ALIGN_CENTER);
+        
+        String[] titleNames = {"区域","货号","品牌","数量"};
+        // 创建第一行：表头
+        XSSFRow titleRow = sheet.createRow(0);
+        createTitleRow(titleRow,null, titleNames);
+
+        //查询数据,只按选择的UUID来查，多选
+        List<StoreDataView> lists = null;
+        String selectStores = this.getRequestParams(request).get("selectStore");
+        String[] uuids = {selectStores};
+        if(StringUtils.isNotEmpty(selectStores)) {
+        	if(selectStores.indexOf(",")>0) {
+        		uuids = selectStores.split(",");
+        	}
+        	lists = storeService.queryDataByUuids(uuids);
+        }
+        
+		//放入数据
+        if(null != lists && !lists.isEmpty()) {
+        	int leng = lists.size();
+        	for(int i = 0 ; i< leng ; i++) {
+        		XSSFRow dataRow = sheet.createRow(i+1);
+        		createDateRow(dataRow,null,lists.get(i));
+        	}
+        }
 		
-		Map map1 = new HashMap<>();
-		map1.put("smokeId", "A001");
-		map1.put("name", "这个烟");
-		list.add(map1);
+		OutputStream out = null;
+		try {
+			out = response.getOutputStream();
+			wb.write(out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			//TODO 删除出库的数据并放入到历史记录中
+			storeService.dataToHis(uuids);
+			storeService.removeUuids(uuids);
+		}
+	}
+	
+	private void createDateRow(XSSFRow dataRow, XSSFCellStyle titleStyle, StoreDataView storeDataView) {
+		XSSFCell cellTitle0 = dataRow.createCell(0);//区域
+		cellTitle0.setCellStyle(titleStyle);
+		cellTitle0.setCellValue(storeDataView.getArea());
 		
-		Map map2 = new HashMap<>();
-		map2.put("smokeId", "A002");
-		map2.put("name", "那个烟");
-		list.add(map2);
+		XSSFCell cellTitle1 = dataRow.createCell(1);//编号
+		cellTitle1.setCellStyle(titleStyle);
+		cellTitle1.setCellValue(storeDataView.getAreaId());
 		
-		return list;
+		XSSFCell cellTitle2 = dataRow.createCell(2);//品牌
+		cellTitle2.setCellStyle(titleStyle);
+		cellTitle2.setCellValue(storeDataView.getSmokeId());
+		
+		XSSFCell cellTitle3 = dataRow.createCell(3);//数量
+		cellTitle3.setCellStyle(titleStyle);
+		cellTitle3.setCellValue(storeDataView.getSmokeNumber());
+		
+	}
+	private void createTitleRow(XSSFRow titleRow, XSSFCellStyle titleStyle,String[] titleNames) {
+		int i = 0;
+		for (String name : titleNames) {
+			XSSFCell cellTitle = titleRow.createCell(i++);
+			cellTitle.setCellStyle(titleStyle);
+			cellTitle.setCellValue(name);
+		}
+	}
+	// 表头使用无边框
+	private XSSFCellStyle createTitleStyle(XSSFWorkbook wb, int fontSize, int boldweight, short align) {
+		XSSFCellStyle styleTitle = wb.createCellStyle();// 生成另外一个样式
+		XSSFFont font = wb.createFont();
+		font.setFontName("宋体");
+		font.setFontHeightInPoints((short) fontSize);// 设置字体大小
+		font.setBoldweight((short) boldweight);
+		styleTitle.setFont(font);
+		styleTitle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+		styleTitle.setAlignment(align);
+		return styleTitle;
 	}
 }

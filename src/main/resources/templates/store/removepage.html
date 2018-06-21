@@ -25,13 +25,14 @@
     		});
      	    $('#exp').bind('click', function(){
      	    	var checks = $(":checkbox:checked");
-     	    	console.log(checks);
      	    	if(checks.length > 0){
-     	    		//TODO 导出页面
+     	    		//导出页面
      	    		var contextPath = $('#contextPath').attr('href');
-     	    		console.log(contextPath);
-     	    		window.location.href = contextPath + "store/exp";
-     	    		
+     	    		window.location.href = contextPath + "store/exp?"+$('#form').serialize();
+     	    		//刷新
+     	    		console.log(123);
+     	    		setTimeout("query()",1500);
+     	    		//query();
      	    	}else{
      	    		$.messager.alert('提示信息','请查询并选择后导出','info');
      	    	}
@@ -84,7 +85,8 @@
         				}
         				$('#table').append(trHtml);
         			}else{
-        				$.messager.alert('提示信息','获取信息出错','info');
+        				$('#table').html("");
+        				$.messager.alert('提示信息','未获取到数据','info');
         			}
        	      	},
        	     	error: function(XMLHttpRequest , errorMsg , e){

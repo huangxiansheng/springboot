@@ -27,6 +27,12 @@ public interface StoreService {
 	public void save(StoreData storeData);
 
 	public void update(StoreData storeData);
+
+	public List<StoreDataView> queryDataByUuids(String[] tmp);
+
+	public void dataToHis(String[] uuids);
+
+	public void removeUuids(String[] uuids);
 	
 	
 	

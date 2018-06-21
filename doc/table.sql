@@ -44,8 +44,7 @@ CREATE TABLE hs_store_his (
   `store_time` timestamp NULL COMMENT '入库时间',
   `store_user` VARCHAR(40) NULL COMMENT '入库用户',
   `out_time` timestamp NULL COMMENT '出库时间',
-  `out_user` VARCHAR(40) NULL COMMENT '出库用户',
-  PRIMARY KEY (`uuid`));
+  `out_user` VARCHAR(40) NULL COMMENT '出库用户');
 
 INSERT INTO hs_user(uuid, user_name, cn_name, password) VALUES
 ('asdasdasd', '000001', '阿达', '$2a$10$BcI3l7/UMH.OD9TuVkuhV.IJDrJVkKFgxpDWiunwSLsslpkO6BONW');

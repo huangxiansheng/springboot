@@ -59,4 +59,20 @@ public class StroeServiceImpl implements StoreService {
 		storeDao.update(storeData);
 	}
 
+	@Override
+	public List<StoreDataView> queryDataByUuids(String[] tmp) {
+		return storeDao.queryDataByUuids(tmp);
+	}
+
+	@Override
+	public void dataToHis(String[] uuids) {
+		storeDao.dataToHis(uuids);
+		
+	}
+
+	@Override
+	public void removeUuids(String[] uuids) {
+		storeDao.removeUuids(uuids);
+	}
+
 }

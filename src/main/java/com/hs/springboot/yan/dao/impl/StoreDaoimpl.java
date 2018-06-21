@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hs.springboot.dao.impl.BaseDaoImpl;
 import com.hs.springboot.entity.HsPage;
+import com.hs.springboot.util.ContextUtil;
 import com.hs.springboot.yan.dao.StoreDao;
 import com.hs.springboot.yan.entity.StoreData;
 import com.hs.springboot.yan.entity.StoreDef;
@@ -129,6 +130,47 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 		String sql ="update hs_store_data set smoke_Id = ?,tray=?,smoke_Number=?,create_Date=? where uuid =?";
 		Object[] values = {sd.getSmokeId(),sd.getTray(),sd.getSmokeNumber(),sd.getCreateDate() ,sd.getUuid()};
 		this.insertOrUpdate(sql, values);
+	}
+
+	@Override
+	public List<StoreDataView> queryDataByUuids(String[] tmp) {
+		StringBuilder sql = new StringBuilder("");
+		sql = sql.append("SELECT def.area,def.area_id,da.* FROM hs_store_def def").append(" LEFT JOIN hs_store_data da")
+				.append(" ON def.uuid = da.uuid where 1=1");
+		sql.append(" and def.uuid in (");
+		for (String uuid : tmp) {
+			sql.append("'").append(uuid).append("',");
+		}
+		sql.delete(sql.length()-1, sql.length());
+		sql.append(")");
+		return super.queryListBysql(sql.toString(), StoreDataView.class);
+	}
+
+	@Override
+	public void dataToHis(String[] uuids) {
+		StringBuilder sql = new StringBuilder("");
+		sql.append("insert INTO hs_store_his(uuid,smoke_id,create_date,store_time,store_user,tray,out_time,out_user)");
+		sql.append(" SELECT uuid,smoke_id,create_date,store_time,store_user,tray,sysdate(),'"+ContextUtil.getUserInfo().getUsername()+"' FROM hs_store_data ");
+		sql.append(" where uuid in (");
+		for (String uuid : uuids) {
+			sql.append("'").append(uuid).append("',");
+		}
+		sql.delete(sql.length()-1, sql.length());
+		sql.append(")");
+		this.insertOrUpdate(sql.toString(), null);
+	}
+
+	@Override
+	public void removeUuids(String[] uuids) {
+		StringBuilder sql = new StringBuilder("");
+		sql.append(" delete from hs_store_data");
+		sql.append(" where uuid in (");
+		for (String uuid : uuids) {
+			sql.append("'").append(uuid).append("',");
+		}
+		sql.delete(sql.length()-1, sql.length());
+		sql.append(")");
+		super.execute(sql.toString());
 	}
 
 }

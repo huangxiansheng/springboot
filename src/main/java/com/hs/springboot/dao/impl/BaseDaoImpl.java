@@ -87,4 +87,8 @@ public abstract class BaseDaoImpl<T, PK extends Serializable> implements BaseDao
 		jdbcTemplate.update(sql, values);
 	}
 	
+	protected void execute(String sql) {
+		jdbcTemplate.execute(sql);
+	}
+	
 }
