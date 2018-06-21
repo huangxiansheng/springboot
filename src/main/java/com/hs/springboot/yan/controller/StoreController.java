@@ -58,17 +58,17 @@ public class StoreController extends BaseController{
 	//首页查询
 	@RequestMapping("/allpage")
 	public String allpage() {
-		return "/store/allpage";
+		return "store/allpage";
 	}
 	//扫码入库页面
 	@RequestMapping("/addpage")
 	public String addpage() {
-		return "/store/addpage";
+		return "store/addpage";
 	}
 	//区域明细页面
 	@RequestMapping("/detailpage")
 	public String detailpage() {
-		return "/store/detailpage";
+		return "store/detailpage";
 	}
 	//区域明细-修改页面
 	@RequestMapping("/modify")
@@ -76,12 +76,12 @@ public class StoreController extends BaseController{
 		String uuid = this.getRequestParams(request).get("uuid");
 		StoreDataView sdv = storeService.queryByUuid(uuid);
 		model.addAttribute("sdv", sdv);
-		return "/store/modify";
+		return "store/modify";
 	}
 	//出库页面
 	@RequestMapping("/removepage")
 	public String removepage() {
-		return "/store/removepage";
+		return "store/removepage";
 	}
 	
 	@RequestMapping("/queryallpage")

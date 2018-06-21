@@ -1,0 +1,19 @@
+##前提已经按照java 1.8+
+1、修改配置文件
+	用rar打开 jar包
+	路径 \BOOT-INF\classes\application.properties
+	可以
+	1)修改日志路径
+	2)数据库链接
+	3)服务器端口
+	
+2、启动服务
+  进入cmd命令行
+  到jar包目录下
+  执行命令
+  java -jar springboot-0.0.1-SNAPSHOT.jar
+
+
+
+
+
