@@ -294,6 +294,26 @@ public class StoreController extends BaseController{
 		}
 	}
 	
+	static Map<String,String> smoke = new HashMap<String,String>();
+	static{
+		smoke.put("001045","双喜（硬）"               );
+		smoke.put("001403","双喜（硬经典）"           );
+		smoke.put("005050","红玫（硬金）"             );
+		smoke.put("138703","七匹狼（白）"             );
+		smoke.put("002608","椰树（硬）"               );
+		smoke.put("134590","庐山（黄精品）"           );
+		smoke.put("134538","庐山（银）"               );
+		smoke.put("134255","庐山（精品）"             );
+		smoke.put("136570","庐山（大红运）"           );
+		smoke.put("136396","金圣（庐山）"             );
+		smoke.put("134897","金圣（赣）"               );
+		smoke.put("134927","金圣（硬红）"             );
+		smoke.put("136907","金圣（硬红·十二生肖）"    );
+		smoke.put("224055","金圣（庐山·有滋有味）"    );
+		smoke.put("224178","金圣（滕王阁·更上一层楼）");
+		smoke.put("136693","金圣（硬滕王阁）"         );
+		smoke.put("224352","庐山（赣）"               );
+	}
 	private void createDateRow(XSSFRow dataRow, XSSFCellStyle titleStyle, StoreDataView storeDataView) {
 		XSSFCell cellTitle0 = dataRow.createCell(0);//区域
 		cellTitle0.setCellStyle(titleStyle);
@@ -305,7 +325,8 @@ public class StoreController extends BaseController{
 		
 		XSSFCell cellTitle2 = dataRow.createCell(2);//品牌
 		cellTitle2.setCellStyle(titleStyle);
-		cellTitle2.setCellValue(storeDataView.getSmokeId());
+		String name = smoke.get(storeDataView.getSmokeId());
+		cellTitle2.setCellValue(StringUtils.isEmpty(name)?storeDataView.getSmokeId():name);
 		
 		XSSFCell cellTitle3 = dataRow.createCell(3);//数量
 		cellTitle3.setCellStyle(titleStyle);

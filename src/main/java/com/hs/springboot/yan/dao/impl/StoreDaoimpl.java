@@ -149,8 +149,8 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 	@Override
 	public void dataToHis(String[] uuids) {
 		StringBuilder sql = new StringBuilder("");
-		sql.append("insert INTO hs_store_his(uuid,smoke_id,create_date,store_time,store_user,tray,out_time,out_user)");
-		sql.append(" SELECT uuid,smoke_id,create_date,store_time,store_user,tray,sysdate(),'"+ContextUtil.getUserInfo().getUsername()+"' FROM hs_store_data ");
+		sql.append("insert INTO hs_store_his(uuid,smoke_id,create_date,smoke_number,store_time,store_user,tray,out_time,out_user)");
+		sql.append(" SELECT uuid,smoke_id,create_date,smoke_number,store_time,store_user,tray,sysdate(),'"+ContextUtil.getUserInfo().getUsername()+"' FROM hs_store_data ");
 		sql.append(" where uuid in (");
 		for (String uuid : uuids) {
 			sql.append("'").append(uuid).append("',");

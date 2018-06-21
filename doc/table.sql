@@ -41,6 +41,7 @@ CREATE TABLE hs_store_his (
   `tray` VARCHAR(40) NOT NULL COMMENT '托盘编号',
   `smoke_id` VARCHAR(40) NULL COMMENT '烟编号',
   `create_date` date NULL COMMENT '生产日期',
+  `smoke_number` integer NULL COMMENT '数量',
   `store_time` timestamp NULL COMMENT '入库时间',
   `store_user` VARCHAR(40) NULL COMMENT '入库用户',
   `out_time` timestamp NULL COMMENT '出库时间',

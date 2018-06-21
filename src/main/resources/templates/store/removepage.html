@@ -30,17 +30,16 @@
      	    		var contextPath = $('#contextPath').attr('href');
      	    		window.location.href = contextPath + "store/exp?"+$('#form').serialize();
      	    		//刷新
-     	    		console.log(123);
      	    		setTimeout("query()",1500);
      	    		//query();
      	    	}else{
+     	    		putAllNumber(0);
      	    		$.messager.alert('提示信息','请查询并选择后导出','info');
      	    	}
      	    });
-     		$('#area').combobox({
-     		    url:'/store/queryarea',
-     		    valueField:'area',
-     		    textField:'area'
+     		$('#allNumber').numberbox({
+     			disabled: true
+     			
      		});
      		$('#smokeId').combobox({
      		    //url:'/store/querysmokeId',
@@ -67,6 +66,7 @@
         				var rows = Math.ceil(length/10); //除以10，向上取整，得到有多少行
         				$('#table').html("");
         				var trHtml = "";
+        				var allNumber = 0;
         				for(var i=0;i<rows;i++){
         					//先拼每行的数据
         					var tdHtml = "";
@@ -78,11 +78,15 @@
         					for(var j=0;j<jL;j++){
         						var storeData = data[i*10+j];
         						tdHtml = tdHtml + createTdHtml(storeData);
+        						allNumber = allNumber + storeData.smokeNumber;
         					}
         					
         					//再把每行的数据放入到table中
         					trHtml = trHtml+'<tr style="height:40px;" id="aa'+i+'">'+tdHtml+'</tr>';
         				}
+        				//把值放入allNumber中
+        				putAllNumber(allNumber);
+        				
         				$('#table').append(trHtml);
         			}else{
         				$('#table').html("");
@@ -93,6 +97,22 @@
        	     		$.messager.alert('提示信息','获取信息出错','info');
        	     	} 
         	});    		
+    	}
+    	
+    	function allNumberChecked(oneInput ,oneNumber){
+    		//选中加数据，取消减数据
+    		var num = $('#allNumber').numberbox('getValue');
+    		if(oneInput.checked){//要格式化数值
+    			num = new Number(num) + new Number(oneNumber); 
+    		}else{
+    			num = new Number(num) - new Number(oneNumber); 
+    		}
+    		putAllNumber(num);
+    	}
+    	function putAllNumber(allNumber){
+    		$('#allNumber').numberbox('enable');
+    		$('#allNumber').numberbox('setValue',allNumber);
+    		$('#allNumber').numberbox('disable');
     	}
     	
     	function createTdHtml(storeData){
@@ -131,7 +151,7 @@
     		}else{
     			titleHtml = 'title="'+title+'" class="easyui-tooltip"';
     		}
-    		return '<td style="background-color: '+color+';height:20px;width:40px;" '+titleHtml+'><input name="selectStore" type="checkbox" checked value="'+uuid+'">'+vHtml+'</td>';
+    		return '<td style="background-color: '+color+';height:20px;width:40px;" '+titleHtml+'><input name="selectStore" type="checkbox" checked value="'+uuid+'" onchange="allNumberChecked(this,'+storeData.smokeNumber+')">'+vHtml+'</td>';
     	}
         function createFrame(url) {
      		var s = '<iframe src="'+url+'" scrolling="auto" frameborder="0" allowtransparency="true" style="width:100%;height:100%;background-color: #f2f2f2;"></iframe>';
@@ -159,11 +179,11 @@
     	
 	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:40px;border: none;">
 	    		<tr style="margin-top: 5px">
-	    			<td class="formLabe" style="width:10%;">区域</td>
-	    			<td style="width:10%;padding-top: 5px;"><input id="area" name="area"></td>
 	    			<td  class="formLabe" style="width:10%;">品牌</td>
 	    			<td style="width:10%;padding-top: 5px;"><input id="smokeId" name="smokeId"></td>
 	    			<td style="width:10%;padding-top: 5px;"><a id="btn" href="#">查询</a></td>
+	    			<td class="formLabe" style="width:10%;">总数量</td>
+	    			<td style="width:10%;padding-top: 5px;"><input id="allNumber" name="allNumber"></td>
 	    			<td style="width:10%;padding-top: 5px;"><a id="exp" href="#">出库</a></td>
 	    		</tr>
 	    	</table>
