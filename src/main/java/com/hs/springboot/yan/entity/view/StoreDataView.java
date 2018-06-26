@@ -10,6 +10,14 @@ import com.hs.springboot.yan.entity.StoreData;
 public class StoreDataView extends StoreData{
 	private String area;
 	private String areaId;
+	private String smokeName;
+	
+	public String getSmokeName() {
+		return smokeName;
+	}
+	public void setSmokeName(String smokeName) {
+		this.smokeName = smokeName;
+	}
 	public String getArea() {
 		return area;
 	}

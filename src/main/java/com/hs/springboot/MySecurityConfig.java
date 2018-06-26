@@ -27,6 +27,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
@@ -193,7 +194,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(); 
+//		return new BCryptPasswordEncoder(); 
+		return NoOpPasswordEncoder.getInstance(); 
 	}
 	
 }

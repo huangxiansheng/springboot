@@ -119,7 +119,14 @@ public class StoreController extends BaseController{
 	public List<StoreDataView> queryStoreDate(HttpServletRequest request){
 		String area = this.getRequestParams(request).get("area");
 		String smokeId = this.getRequestParams(request).get("smokeId");
-		return storeService.queryStoreDate(area,smokeId);
+		List<StoreDataView> sdvs = storeService.queryStoreDate(area,smokeId);
+		if(sdvs != null && !sdvs.isEmpty()) {
+			for (StoreDataView storeDataView : sdvs) {
+				String name = smoke.get(storeDataView.getSmokeId());
+				storeDataView.setSmokeName(name);
+			}
+		}
+		return sdvs;
 	}
 	@RequestMapping("/queryByUuid")
 	@ResponseBody
