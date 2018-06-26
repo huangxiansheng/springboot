@@ -1,5 +1,5 @@
 			  
---数据库
+-- 数据库
 CREATE TABLE `hs_user` (
   `uuid` VARCHAR(40) NOT NULL COMMENT 'uuid',
   `user_name` VARCHAR(40) NULL COMMENT '用户名',
