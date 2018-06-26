@@ -85,7 +85,7 @@
         					trHtml = trHtml+'<tr style="height:40px;" id="aa'+i+'">'+tdHtml+'</tr>';
         				}
         				//把值放入allNumber中
-        				putAllNumber(allNumber);
+        				//putAllNumber(allNumber);
         				
         				$('#table').append(trHtml);
         			}else{
@@ -151,7 +151,7 @@
     		}else{
     			titleHtml = 'title="'+title+'" class="easyui-tooltip"';
     		}
-    		return '<td style="background-color: '+color+';height:20px;width:40px;" '+titleHtml+'><input name="selectStore" type="checkbox" checked value="'+uuid+'" onchange="allNumberChecked(this,'+storeData.smokeNumber+')">'+vHtml+'</td>';
+    		return '<td style="background-color: '+color+';height:20px;width:40px;" '+titleHtml+'><input name="selectStore" type="checkbox" value="'+uuid+'" onchange="allNumberChecked(this,'+storeData.smokeNumber+')">'+vHtml+'</td>';
     	}
         function createFrame(url) {
      		var s = '<iframe src="'+url+'" scrolling="auto" frameborder="0" allowtransparency="true" style="width:100%;height:100%;background-color: #f2f2f2;"></iframe>';
@@ -163,11 +163,7 @@
 	height: 30px;
 	text-align: right;
 	padding-right: 5px;
-}
-
-	.panel-body {  
-    overflow: hidden;  
-    } 
+} 
 </style>
 </head>
 <body>
