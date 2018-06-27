@@ -24,18 +24,22 @@
     		    iconCls: 'icon-print'
     		});
      	    $('#exp').bind('click', function(){
-     	    	var checks = $(":checkbox:checked");
-     	    	if(checks.length > 0){
-     	    		//导出页面
-     	    		var contextPath = $('#contextPath').attr('href');
-     	    		window.location.href = contextPath + "store/exp?"+$('#form').serialize();
-     	    		//刷新
-     	    		setTimeout("query()",1500);
-     	    		//query();
-     	    	}else{
-     	    		putAllNumber(0);
-     	    		$.messager.alert('提示信息','请查询并选择后导出','info');
-     	    	}
+     	    	$.messager.confirm('出库','您确认出库么?',function(r){
+     	    		if(r){
+     	     	    	var checks = $(":checkbox:checked");
+     	     	    	if(checks.length > 0){
+     	     	    		//导出页面
+     	     	    		var contextPath = $('#contextPath').attr('href');
+     	     	    		window.location.href = contextPath + "store/exp?"+$('#form').serialize();
+     	     	    		//刷新
+     	     	    		setTimeout("query()",1500);
+     	     	    		//query();
+     	     	    	}else{
+     	     	    		putAllNumber(0);
+     	     	    		$.messager.alert('提示信息','请查询并选择后导出','info');
+     	     	    	}
+     	    		}
+     	    	});
      	    });
      		$('#allNumber').numberbox({
      			disabled: true
