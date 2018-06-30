@@ -48,7 +48,7 @@
 	   		 	sortOrder: 'asc',
 	   		    columns: [
 	   		    	[
-	   		    	{field:'area',title:'区域',width:100},
+	   		    	//{field:'area',title:'区域',width:100},
 	   		        {field:'smokeId',title:'品牌',width:100,formatter: function(value,row,index){
 	   		        	smokeJsons.forEach(function( val, index ) {
 	   		        		if(value == val.smokeId){
@@ -57,9 +57,9 @@
 	   		        	});
 	   		        	return value;
 	   		        }},
-	   		        {field:'smokeNumber',title:'数量',width:100},
-	   		        {field:'createDate',title:'生产日期',width:100},
-	   		        {field:'storeTime',title:'入库时间',width:100}
+	   		        {field:'smokeNumber',title:'数量',width:100}
+	   		        //{field:'createDate',title:'生产日期',width:100},
+	   		        //{field:'storeTime',title:'入库时间',width:100}
 	   		        ]
 	   		    ]
      		});
@@ -75,10 +75,10 @@
     	function query(){
     		console.log('query');
     		$('#grid').datagrid('load', {
-   				area: $('#area').combobox('getValue'),
-   				smokeId: $('#smokeId').combobox('getValue'),
-   				date1: $('#date1').datebox('getValue'),
-   				date2: $('#date2').datebox('getValue')
+   				//area: $('#area').combobox('getValue'),
+   				smokeId: $('#smokeId').combobox('getValue')
+   				//date1: $('#date1').datebox('getValue'),
+   				//date2: $('#date2').datebox('getValue')
     		}); ;
     	}
     </script>
@@ -96,10 +96,10 @@
     	<form id="form" action="/#">
 	    	<table cellspacing="0" cellpadding="0" style="width:100%;height:40px;border: none;">
 	    		<tr style="margin-top: 5px">
-	    			<td class="formLabe" style="width:5%;">区域</td><td style="width:10%;padding-top: 5px;"><input id="area" name="area"></td>
+	    			<!-- <td class="formLabe" style="width:5%;">区域</td><td style="width:10%;padding-top: 5px;"><input id="area" name="area"></td> -->
 	    			<td class="formLabe" style="width:5%;">品牌</td><td style="width:10%;padding-top: 5px;"><input id="smokeId" name="smokeId"></td>
-	    			<td class="formLabe" style="width:5%;">生产日期</td><td style="width:10%;text-align: right;padding-top: 5px;"><input id="date1" type="text" name="date1"></td>
-	    			<td style="width:10%;padding-top: 5px;">到<input id="date2" type="text" name="date2"></td>
+	    			<!-- <td class="formLabe" style="width:5%;">生产日期</td><td style="width:10%;text-align: right;padding-top: 5px;"><input id="date1" type="text" name="date1"></td>
+	    			<td style="width:10%;padding-top: 5px;">到<input id="date2" type="text" name="date2"></td> -->
 	    			<td class="formLabe" style="width:10%;text-align: center;"><a id="btn" href="#">查询</a></td>
 	    		</tr>
 	    	</table>

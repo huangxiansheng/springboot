@@ -37,7 +37,7 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 		String date2 = params.get("date2");
 		
 		
-		StringBuilder sql = new StringBuilder("SELECT a.area,a.smoke_id,a.create_date,a.store_time,sum(a.smoke_number) as smoke_number FROM ")
+		StringBuilder sql = new StringBuilder("SELECT a.smoke_id,sum(a.smoke_number) as smoke_number FROM ")
 				 .append("(SELECT def.area,def.area_id,da.* FROM hs_store_def def")
 				 .append(" LEFT JOIN hs_store_data da")
 				 .append(" ON def.uuid = da.uuid ")
@@ -59,7 +59,8 @@ public class StoreDaoimpl extends BaseDaoImpl<StoreDef, String> implements Store
 		}
 		
 		sql = sql.append(") a")
-				.append(" group BY a.area,a.smoke_id,a.create_date,a.store_time");
+//				.append(" group BY a.area,a.smoke_id,a.create_date,a.store_time");
+		.append(" group BY a.smoke_id");
 		
 		
 		return this.queryForPageBySql(sql.toString(), page,StoreView.class);
