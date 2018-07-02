@@ -26,8 +26,8 @@
               store/all
   区域明细    store/detailpage
               store/detail
-  出库        store/removepage
               store/remove
+  出库        store/removepage
 			  store/exp
 			  			  
 			  
@@ -36,7 +36,9 @@
   
   
 --以下为可能的新需求
-用户管理？用户密码等？
-仓库定义页面？状态修改？
-各种图？
+新需求：
+1、增加货位禁用功能。
+2、出库操作日志。
+3、扫码器与mysql功能（了解一下）
+
 
