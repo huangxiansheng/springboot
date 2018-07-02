@@ -225,7 +225,18 @@ public class StoreController extends BaseController{
 		return reMap;
 	}
 	
-	
+	@RequestMapping("/remove")
+	@ResponseBody
+	public Map<String,Object> remove(HttpServletRequest request) throws ParseException {
+		Map<String,Object> reMap = new HashMap<>();
+		
+		String uuid = this.getRequestParams(request).get("uuid");
+		String[] uuids = {uuid};
+		
+		storeService.removeUuids(uuids);
+		reMap.put("flag", true);
+		return reMap;
+	}
 	
 	
 	

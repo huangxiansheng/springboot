@@ -23,6 +23,9 @@
      		$('#modify').linkbutton({
     		    iconCls: 'icon-edit'
     		});
+     		$('#delete').linkbutton({
+    		    iconCls: 'icon-remove'
+    		});
      	    $('#modify').bind('click', function(){
      	    	var checks = $(":checkbox:checked");
      	    	if(checks.length == 1){
@@ -37,6 +40,34 @@
      	    		}
      	    	}else{
      	    		$.messager.alert('提示信息','请选择一个进行编辑','info');
+     	    	}
+     	    });
+     	    $('#delete').bind('click', function(){
+     	    	var checks = $(":checkbox:checked");
+     	    	if(checks.length == 1){
+     	    		if(checks[0].value == 'null'){
+     	    			$.messager.alert('提示信息','只能选择非空的区域进行清空','info');
+     	    		}else{
+     	    			checkUuid = checks[0].value;
+     	    			//TODO 
+     	    			//	content: createFrame('/store/remove?uuid='+checkUuid)
+     	    			$.ajax({
+     	           		url:'/store/remove?uuid='+checkUuid,
+     	           		success: function(data){
+	     	           			if(data){
+	     	           				$.messager.alert('提示信息','清空成功','info');
+	     	           				query();
+	     	           			}else{
+	     	           				$.messager.alert('提示信息','清空出错','info');
+	     	           			}
+     	          	    },
+   	          	     	error: function(XMLHttpRequest , errorMsg , e){
+   	          	     		$.messager.alert('提示信息','清空出错','info');
+   	          	     	} 
+     	           	}); 
+     	    		}
+     	    	}else{
+     	    		$.messager.alert('提示信息','请选择一个进行清空','info');
      	    	}
      	    });
      		$('#area').combobox({
@@ -150,6 +181,7 @@
 	    			<td style="width:10%;padding-top: 5px;"><input id="area" name="area"></td>
 	    			<td style="width:10%;padding-top: 5px;"><a id="btn" href="#">查询</a></td>
 	    			<td style="width:10%;padding-top: 5px;"><a id="modify" href="#">编辑</a></td>
+	    			<td style="width:10%;padding-top: 5px;"><a id="delete" href="#">清空</a></td>
 	    		</tr>
 	    	</table>
     	</form>
